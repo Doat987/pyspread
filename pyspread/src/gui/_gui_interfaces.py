@@ -49,9 +49,9 @@ import wx.lib.agw.genericmessagedialog as GMD
 
 import src.lib.i18n as i18n
 
-from _dialogs import MacroDialog, DimensionsEntryDialog, AboutDialog
-from _dialogs import CsvImportDialog, CellEntryDialog, CsvExportDialog
-from _dialogs import PreferencesDialog, GPGParamsDialog, PasteAsDialog
+from ._dialogs import MacroDialog, DimensionsEntryDialog, AboutDialog
+from ._dialogs import CsvImportDialog, CellEntryDialog, CsvExportDialog
+from ._dialogs import PreferencesDialog, GPGParamsDialog, PasteAsDialog
 from src.gui._cairo_export_dialog import CairoExportDialog
 
 # use ugettext instead of gettext to avoid unicode errors
@@ -220,7 +220,7 @@ class ModalDialogInterfaceMixin(object):
         try:
             filterdlg = CsvImportDialog(self.main_window, csvfilepath=path)
 
-        except csv.Error, err:
+        except csv.Error as err:
             # Display modal warning dialog
 
             msg = _("'{filepath}' does not seem to be a valid CSV file.\n \n"
@@ -269,7 +269,7 @@ class ModalDialogInterfaceMixin(object):
 
         if filterdlg.ShowModal() == wx.ID_OK:
             dialect, has_header = filterdlg.csvwidgets.get_dialect()
-            digest_types = [types.StringType]
+            digest_types = [bytes]
         else:
             filterdlg.Destroy()
             return

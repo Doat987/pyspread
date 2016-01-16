@@ -84,7 +84,7 @@ def code2color(color_string):
     """Returns wx.Colour from a string of a 3-tuple of floats in [0.0, 1.0]"""
 
     color_tuple = ast.literal_eval(color_string)
-    color_tuple_int = map(lambda x: int(x * 255.0), color_tuple)
+    color_tuple_int = [int(x * 255.0) for x in color_tuple]
 
     return wx.Colour(*color_tuple_int)
 
@@ -92,7 +92,7 @@ def code2color(color_string):
 def color2code(color):
     """Returns repr of 3-tuple of floats in [0.0, 1.0] from wx.Colour"""
 
-    return unicode(tuple(i / 255.0 for i in color.Get()))
+    return str(tuple(i / 255.0 for i in color.Get()))
 
 
 def color_pack2rgb(packed):
@@ -171,7 +171,7 @@ def common_start(strings):
     def gen_start_strings(string):
         """Generator that yield start sub-strings of length 1, 2, ..."""
 
-        for i in xrange(1, len(string) + 1):
+        for i in range(1, len(string) + 1):
             yield string[:i]
 
     # Empty strings list

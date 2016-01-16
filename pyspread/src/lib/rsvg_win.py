@@ -1,4 +1,4 @@
-print "Detected windows, creating rsvg."
+print("Detected windows, creating rsvg.")
 #some workarounds for windows
 
 from ctypes import *

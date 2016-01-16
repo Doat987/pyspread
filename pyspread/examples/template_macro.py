@@ -10,7 +10,7 @@ def rowcol_from_template(target_tab, template_tab=0):
 
 	"""
 
-	for row, tab in S.row_heights.keys():
+	for row, tab in list(S.row_heights.keys()):
 		# Delete all row heights in target table
 		if tab == target_tab:
 			S.row_heights.pop((row, tab))
@@ -19,7 +19,7 @@ def rowcol_from_template(target_tab, template_tab=0):
 			S.row_heights[(row, target_tab)] = \
 				S.row_heights[(row, tab)]
 
-	for col, tab in S.col_widths.keys():
+	for col, tab in list(S.col_widths.keys()):
 		# Delete all column widths in target table
 		if tab == target_tab:
 			S.col_widths.pop((col, tab))

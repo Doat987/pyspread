@@ -142,7 +142,7 @@ class TestRotoOriginRect(object):
         bbox_calculated = bbox_x_min, bbox_x_max, bbox_y_min, bbox_y_max
 
         for b1, b2 in zip(bbox_from_method, bbox_calculated):
-            print b1, b2
+            print(b1, b2)
             assert abs(b1 - b2) < 1.0E-10
 
     param_comb_rotoorigin_collide = [
@@ -217,7 +217,7 @@ class TestRotoRect(object):
     def test_get_center(self, x, y, w, h, angle, res):
         rect = xrect.RotoRect(x, y, w, h, angle)
         center = rect.get_center()
-        assert map(round, center) == map(round, res)
+        assert list(map(round, center)) == list(map(round, res))
 
     param_get_edges = [
         {'x': 0, 'y': 0, 'w': 20, 'h': 10, 'angle': 0,
@@ -233,7 +233,7 @@ class TestRotoRect(object):
         rect = xrect.RotoRect(x, y, w, h, angle)
         edges = rect.get_edges()
         for edge, resele in zip(edges, res):
-            assert map(round, edge) == map(round, resele)
+            assert list(map(round, edge)) == list(map(round, resele))
 
     param_collides_axisaligned_rect = [
         # Identity

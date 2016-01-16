@@ -75,8 +75,8 @@ def get_python_tutorial_path():
 def get_dpi():
     """Returns screen dpi resolution"""
 
-    pxmm_2_dpi = lambda (pixels, length_mm): pixels * 25.6 / length_mm
-    return map(pxmm_2_dpi, zip(wx.GetDisplaySize(), wx.GetDisplaySizeMM()))
+    pxmm_2_dpi = lambda pixels_length_mm: pixels_length_mm[0] * 25.6 / pixels_length_mm[1]
+    return list(map(pxmm_2_dpi, list(zip(wx.GetDisplaySize(), wx.GetDisplaySizeMM()))))
 
 
 def get_color(name):

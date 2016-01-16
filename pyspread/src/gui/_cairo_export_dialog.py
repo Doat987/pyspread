@@ -88,7 +88,7 @@ class CairoExportDialog(wx.Dialog):
             self.page_height_text_ctrl = wx.TextCtrl(self, wx.ID_ANY)
             self.page_layout_choice = \
                 wx.Choice(self, wx.ID_ANY,
-                          choices=self.paper_sizes_points.keys())
+                          choices=list(self.paper_sizes_points.keys()))
             self.sizer_2_staticbox = wx.StaticBox(self, wx.ID_ANY, _("Page"))
 
             self.page_layout_choice.Bind(wx.EVT_CHOICE,

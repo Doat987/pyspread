@@ -43,8 +43,8 @@ import optparse
 import wx
 __ = wx.App(False)  # Windows Hack
 
-from sysvars import get_program_path
-import lib.i18n as i18n
+from src.sysvars import get_program_path
+from src.lib.i18n import i18n
 
 
 # Use ugettext instead of getttext to avoid unicode errors
@@ -60,21 +60,6 @@ try:
 except AttributeError:
     # Probably not on Windows
     pass
-
-# Patch for using with PyScripter thanks to Colin J. Williams
-# If wx exists in sys,modules, we dont need to import wx version.
-# wx is already imported if the PyScripter wx engine is used.
-
-try:
-    sys.modules['wx']
-except KeyError:
-    # Select wx version 3.0 if possible
-    try:
-        import wxversion
-        wxversion.select(['3.0', '2.8', '2.9'])
-
-    except ImportError:
-        pass
 
 from src.gui._events import post_command_event, GridActionEventMixin
 
@@ -135,12 +120,12 @@ class Commandlineparser(object):
 
         # If one dimension is 0 then the grid has no cells
         if min(options.dimensions) < 1:
-            print _("Cell dimension must be > 0.")
+            print(_("Cell dimension must be > 0."))
             sys.exit()
 
         # No MDI yet, pyspread can be started several times though
         if len(args) > 1:
-            print _("Only one file may be opened at a time.")
+            print(_("Only one file may be opened at a time."))
             sys.exit()
 
         filename = None
@@ -233,7 +218,7 @@ def pyspread(S=None):
 
 if __name__ == "__main__":
     if 'unicode' not in wx.PlatformInfo:
-        print _("You need a unicode build of wxPython to run pyspread.")
+        print(_("You need a unicode build of wxPython to run pyspread."))
 
     else:
         if DEBUG:

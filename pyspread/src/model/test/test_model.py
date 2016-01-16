@@ -168,7 +168,7 @@ class TestDataArray(object):
     def test_keys(self):
         """Unit test for keys"""
 
-        assert self.data_array.keys() == []
+        assert list(self.data_array.keys()) == []
 
         self.data_array[(1, 2, 3)] = "12"
         self.data_array[(1, 2, 4)] = "13"
@@ -342,12 +342,12 @@ class TestCodeArray(object):
         gridsize = 100
         filled_grid = CodeArray((gridsize, 10, 1))
         for i in [-2**99, 2**99, 0]:
-            for j in xrange(gridsize):
+            for j in range(gridsize):
                 filled_grid[j, 0, 0] = str(i)
                 filled_grid[j, 1, 0] = str(i) + '+' + str(j)
                 filled_grid[j, 2, 0] = str(i) + '*' + str(j)
 
-            for j in xrange(gridsize):
+            for j in range(gridsize):
                 assert filled_grid[j, 0, 0] == i
                 assert filled_grid[j, 1, 0] == i + j
                 assert filled_grid[j, 2, 0] == i * j
@@ -363,12 +363,12 @@ class TestCodeArray(object):
 
                 assert filled_grid[j, 3, 0] == eval(funcname + "(" + "i" + ")")
         #Test X, Y, Z
-        for i in xrange(10):
+        for i in range(10):
             self.code_array[i, 0, 0] = str(i)
-        assert [self.code_array((i, 0, 0)) for i in xrange(10)] == \
-            map(str, xrange(10))
+        assert [self.code_array((i, 0, 0)) for i in range(10)] == \
+            list(map(str, range(10)))
 
-        assert [self.code_array[i, 0, 0] for i in xrange(10)] == range(10)
+        assert [self.code_array[i, 0, 0] for i in range(10)] == list(range(10))
 
         # Test cycle detection
 
@@ -386,11 +386,11 @@ class TestCodeArray(object):
         def gen():
             """Nested generator"""
 
-            yield (("Test" for _ in xrange(2)) for _ in xrange(2))
+            yield (("Test" for _ in range(2)) for _ in range(2))
 
         res = self.code_array._make_nested_list(gen())
 
-        assert res == [[["Test" for _ in xrange(2)] for _ in xrange(2)]]
+        assert res == [[["Test" for _ in range(2)] for _ in range(2)]]
 
     param_get_assignment_target_end = [
         {'code': "a=5", 'res': 1},
@@ -493,7 +493,7 @@ class TestCodeArray(object):
 
         code_array = self.code_array
 
-        for i in xrange(100):
+        for i in range(100):
             code_array[i, 0, 0] = str(i)
 
         assert code_array[3, 0, 0] == 3

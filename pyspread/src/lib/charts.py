@@ -35,9 +35,9 @@ Provides
 """
 
 from copy import copy
-from cStringIO import StringIO
+from io import StringIO
 import datetime
-import i18n
+from . import i18n
 import warnings
 import types
 
@@ -62,7 +62,7 @@ def object2code(key, code):
             code = False
 
     else:
-        code = unicode(code)
+        code = str(code)
 
     return code
 
@@ -273,7 +273,7 @@ class ChartFigure(Figure):
                 series_list = list(series[x_str])
                 series_unicode_list = []
                 for ele in series_list:
-                    if isinstance(ele, types.StringType):
+                    if isinstance(ele, bytes):
                         try:
                             series_unicode_list.append(ele.decode('utf-8'))
                         except Exception:

@@ -80,7 +80,7 @@ class GridTable(wx.grid.PyGridTableBase):
         value = self.data_array((row, col, table))
 
         if value is None:
-            return u""
+            return ""
         else:
             return value
 
@@ -101,7 +101,7 @@ class GridTable(wx.grid.PyGridTableBase):
         if cell_code is not None and len(cell_code) > maxlength:
             chunk = 80
             cell_code = "\n".join(cell_code[i:i + chunk]
-                                  for i in xrange(0, len(cell_code), chunk))
+                                  for i in range(0, len(cell_code), chunk))
 
         return cell_code
 

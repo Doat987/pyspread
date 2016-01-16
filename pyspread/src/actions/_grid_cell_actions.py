@@ -53,7 +53,7 @@ class CellActions(Actions):
         old_code = self.grid.code_array(key)
 
         try:
-            old_code = unicode(old_code, encoding="utf-8")
+            old_code = str(old_code, encoding="utf-8")
 
         except TypeError:
             pass
@@ -89,8 +89,8 @@ class CellActions(Actions):
     def _get_absolute_reference(self, ref_key):
         """Returns absolute reference code for key."""
 
-        key_str = u", ".join(map(str, ref_key))
-        return u"S[" + key_str + u"]"
+        key_str = ", ".join(map(str, ref_key))
+        return "S[" + key_str + "]"
 
     def _get_relative_reference(self, cursor, ref_key):
         """Returns absolute reference code for key.
@@ -117,13 +117,13 @@ class CellActions(Actions):
             diff_key_ele = ref_key_ele - cursor_ele
 
             if diff_key_ele == 0:
-                return u""
+                return ""
 
             elif diff_key_ele < 0:
-                return u"-" + str(abs(diff_key_ele))
+                return "-" + str(abs(diff_key_ele))
 
             elif diff_key_ele > 0:
-                return u"+" + str(diff_key_ele)
+                return "+" + str(diff_key_ele)
 
             else:
                 msg = _("{key} seems to be no Integer")
@@ -136,9 +136,9 @@ class CellActions(Actions):
             key_strings.append(magic +
                                get_rel_key_ele(cursor_ele, ref_key_ele))
 
-        key_string = u", ".join(key_strings)
+        key_string = ", ".join(key_strings)
 
-        return u"S[" + key_string + u"]"
+        return "S[" + key_string + "]"
 
     def append_reference_code(self, key, ref_key, ref_type="absolute"):
         """Appends reference code to cell code.
@@ -168,7 +168,7 @@ class CellActions(Actions):
         old_code = self.grid.code_array(key)
 
         if old_code is None:
-            old_code = u""
+            old_code = ""
 
         if "S" in old_code and old_code[-1] == "]":
             old_code_left, __ = old_code.rsplit("S", 1)
@@ -443,7 +443,7 @@ class CellActions(Actions):
         attr_values = self.attr_toggle_values[attr_key]
 
         # Map attr_value to next attr_value
-        attr_map = dict(zip(attr_values, attr_values[1:] + attr_values[:1]))
+        attr_map = dict(list(zip(attr_values, attr_values[1:] + attr_values[:1])))
 
         # Return next value from attr_toggle_values value list
 
@@ -465,7 +465,7 @@ class CellActions(Actions):
         attr_values = self.attr_toggle_values[attr_key]
 
         # Map attr_value to next attr_value
-        attr_map = dict(zip(attr_values, attr_values[1:] + attr_values[:1]))
+        attr_map = dict(list(zip(attr_values, attr_values[1:] + attr_values[:1])))
 
         selection_attrs = \
             (attr for attr in cell_attributes if attr[0] == selection)

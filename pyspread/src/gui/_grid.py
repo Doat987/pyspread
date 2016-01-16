@@ -38,13 +38,13 @@ try:
 except ImportError:
     rsvg = None
 
-from _events import post_command_event, EventMixin, GridActionEventMixin
+from ._events import post_command_event, EventMixin, GridActionEventMixin
 
-from _grid_table import GridTable
-from _grid_renderer import GridRenderer
-from _gui_interfaces import GuiInterfaces
-from _menubars import ContextMenu
-from _chart_dialog import ChartDialog
+from ._grid_table import GridTable
+from ._grid_renderer import GridRenderer
+from ._gui_interfaces import GuiInterfaces
+from ._menubars import ContextMenu
+from ._chart_dialog import ChartDialog
 
 import src.lib.i18n as i18n
 from src.sysvars import is_gtk
@@ -484,7 +484,7 @@ class GridCellEventHandlers(object):
         cell_code = self.grid.code_array(key)
 
         if cell_code is None:
-            cell_code = u""
+            cell_code = ""
 
         chart_dialog = ChartDialog(self.grid.main_window, key, cell_code)
 
@@ -1047,7 +1047,7 @@ class GridEventHandlers(GridActionEventMixin):
             self.grid.actions.cursor = findpos
 
             # Update statusbar
-            statustext = _(u"Found '{text}' in cell {key}.")
+            statustext = _("Found '{text}' in cell {key}.")
             statustext = statustext.format(text=text, key=findpos)
 
         post_command_event(self.grid.main_window, self.grid.StatusBarMsg,
@@ -1101,7 +1101,7 @@ class GridEventHandlers(GridActionEventMixin):
                                          search_result=False)
 
         if findpos is None:
-            statustext = _(u"'{find_string}' not found.")
+            statustext = _("'{find_string}' not found.")
             statustext = statustext.format(find_string=find_string)
 
         else:
@@ -1109,8 +1109,8 @@ class GridEventHandlers(GridActionEventMixin):
             self.grid.actions.cursor = findpos
 
             # Update statusbar
-            statustext = _(u"Replaced '{find_string}' in cell {key} with "
-                           u"{replace_string}.")
+            statustext = _("Replaced '{find_string}' in cell {key} with "
+                           "{replace_string}.")
             statustext = statustext.format(find_string=find_string,
                                            key=findpos,
                                            replace_string=replace_string)
@@ -1336,7 +1336,7 @@ class GridEventHandlers(GridActionEventMixin):
             leftmost_col = box[0][1]
             rightmost_col = box[1][1]
             if leftmost_col == 0 and rightmost_col == num_cols:
-                rows += range(box[0][0], box[1][0]+1)
+                rows += list(range(box[0][0], box[1][0]+1))
 
         for row in rows:
             self.grid.code_array.set_row_height(row, tab, rowsize,
@@ -1366,7 +1366,7 @@ class GridEventHandlers(GridActionEventMixin):
             top_row = box[0][0]
             bottom_row = box[1][0]
             if top_row == 0 and bottom_row == num_rows:
-                cols += range(box[0][1], box[1][1]+1)
+                cols += list(range(box[0][1], box[1][1]+1))
 
         for col in cols:
             self.grid.code_array.set_col_width(col, tab, colsize,
@@ -1382,10 +1382,10 @@ class GridEventHandlers(GridActionEventMixin):
 
         try:
             self.grid.actions.sort_ascending(self.grid.actions.cursor)
-            statustext = _(u"Sorting complete.")
+            statustext = _("Sorting complete.")
 
-        except Exception, err:
-            statustext = _(u"Sorting failed: {}").format(err)
+        except Exception as err:
+            statustext = _("Sorting failed: {}").format(err)
 
         post_command_event(self.grid.main_window, self.grid.StatusBarMsg,
                            text=statustext)
@@ -1395,10 +1395,10 @@ class GridEventHandlers(GridActionEventMixin):
 
         try:
             self.grid.actions.sort_descending(self.grid.actions.cursor)
-            statustext = _(u"Sorting complete.")
+            statustext = _("Sorting complete.")
 
-        except Exception, err:
-            statustext = _(u"Sorting failed: {}").format(err)
+        except Exception as err:
+            statustext = _("Sorting failed: {}").format(err)
 
         post_command_event(self.grid.main_window, self.grid.StatusBarMsg,
                            text=statustext)

@@ -27,7 +27,7 @@ Grid selection representation
 
 """
 
-from itertools import izip
+
 
 
 class Selection(object):
@@ -56,7 +56,7 @@ class Selection(object):
         self.cols = cols
         self.cells = cells
 
-    def __nonzero__(self):
+    def __bool__(self):
         """Returns True iif any attribute is non-empty"""
 
         return any((self.block_tl,
@@ -102,7 +102,7 @@ class Selection(object):
         cell_row, cell_col = cell
 
         # Block selections
-        for top_left, bottom_right in izip(self.block_tl, self.block_br):
+        for top_left, bottom_right in zip(self.block_tl, self.block_br):
             top, left = top_left
             bottom, right = bottom_right
 
@@ -323,7 +323,7 @@ class Selection(object):
 
         # Block selections
         templ = "[(r, c, {}) for r in xrange({}, {}) for c in xrange({}, {})]"
-        for (top, left), (bottom, right) in izip(self.block_tl, self.block_br):
+        for (top, left), (bottom, right) in zip(self.block_tl, self.block_br):
             string_list += [templ.format(table, top, bottom + 1,
                                          left, right + 1)]
 

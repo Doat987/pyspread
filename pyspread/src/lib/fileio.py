@@ -36,7 +36,7 @@ Provides
 """
 
 import bz2
-import i18n
+from . import i18n
 
 import wx
 
@@ -85,7 +85,7 @@ class AOpenMixin(object):
         # Bindings
         self.main_window.Bind(wx.EVT_KEY_DOWN, self.on_key)
 
-    def next(self):
+    def __next__(self):
 
         """Next that shows progress in statusbar for each <freq> cells"""
 

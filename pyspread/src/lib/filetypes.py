@@ -108,7 +108,7 @@ def get_filetypes2wildcards(filetypes):
         return filetype not in FILETYPE_AVAILABILITY or \
                FILETYPE_AVAILABILITY[filetype]
 
-    available_filetypes = filter(is_available, filetypes)
+    available_filetypes = list(filter(is_available, filetypes))
 
     return OrderedDict((ft, FILETYPE2WILDCARD[ft])
                        for ft in available_filetypes)

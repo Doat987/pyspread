@@ -213,7 +213,7 @@ class GridRenderer(wx.grid.PyGridCellRenderer):
         else:
             cell_preview = repr(grid.code_array[key])[:100]
 
-        sorted_keys = sorted(grid.code_array.cell_attributes[key].iteritems())
+        sorted_keys = sorted(grid.code_array.cell_attributes[key].items())
 
         key_above_left = row - 1, col - 1, tab
         key_above = row - 1, col, tab

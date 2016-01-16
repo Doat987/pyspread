@@ -85,14 +85,14 @@ def test_get_first_line(filepath, first_line):
 
 param_digested_line = [
     {'line': "1, 3, 1",
-     'digest_types': [types.StringType, types.IntType, types.FloatType],
+     'digest_types': [bytes, int, float],
      'res': ["1", 3, 1.0]},
     {'line': "1",
-     'digest_types': [types.FloatType],
+     'digest_types': [float],
      'res': [1.0]},
-    {'line': u"1, Gsdfjkljö",
-     'digest_types': [types.FloatType, types.UnicodeType],
-     'res': [1.0, u"Gsdfjkljö"]},
+    {'line': "1, Gsdfjkljö",
+     'digest_types': [float, str],
+     'res': [1.0, "Gsdfjkljö"]},
 ]
 
 
@@ -106,7 +106,7 @@ def digested_line(line, digest_types, res):
 def test_cell_key_val_gen():
     """Unit test for cell_key_val_gen"""
 
-    list_of_lists = [range(10), range(10)]
+    list_of_lists = [list(range(10)), list(range(10))]
     gen = __csv.cell_key_val_gen(list_of_lists, (100, 100, 10))
     for row, col, value in gen:
         assert col == value
@@ -116,10 +116,10 @@ class TestDigest(object):
     """Unit tests for Digest"""
 
     param_make_string = [
-        {'val': 1, 'acc_types': [types.StringType], 'res': "1"},
-        {'val': None, 'acc_types': [types.StringType], 'res': ""},
-        {'val': 1, 'acc_types': [types.UnicodeType], 'res': u"1"},
-        {'val': None, 'acc_types': [types.UnicodeType], 'res': u""},
+        {'val': 1, 'acc_types': [bytes], 'res': "1"},
+        {'val': None, 'acc_types': [bytes], 'res': ""},
+        {'val': 1, 'acc_types': [str], 'res': "1"},
+        {'val': None, 'acc_types': [str], 'res': ""},
     ]
 
     @params(param_make_string)
@@ -142,7 +142,7 @@ class TestCsvInterface(object):
 
         filepath = TESTPATH + 'test1.csv'
         self.dialect, __ = sniff(filepath)
-        self.digest_types = [types.UnicodeType]
+        self.digest_types = [str]
         has_header = True
 
         self.interface = CsvInterface(self.main_window, filepath, self.dialect,
@@ -161,7 +161,7 @@ class TestCsvInterface(object):
     def test_get_csv_cells_gen(self):
         """Unit test for _get_csv_cells_gen"""
 
-        data = [u'324', u'234', u'sdfg']
+        data = ['324', '234', 'sdfg']
         res = self.interface._get_csv_cells_gen(data)
 
         for ele, rele in zip(data, res):

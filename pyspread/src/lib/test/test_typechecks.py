@@ -52,9 +52,9 @@ def test_is_slice_like(slc, res):
 
 param_str = [
     {"string": "", "res": True},
-    {"string": u"", "res": True},
+    {"string": "", "res": True},
     {"string": "Test", "res": True},
-    {"string": u"x" * 1000, "res": True},
+    {"string": "x" * 1000, "res": True},
     {"string": ['1'], "res": False},
     {"string": ('1', '2', '3'), "res": False},
     {"string": {None: '3'}, "res": False},
@@ -70,9 +70,9 @@ def test_is_string_like(string, res):
 
 param_gen = [
     {"gen": (i for i in [3, 4]), "res": True},
-    {"gen": (str(i) for i in xrange(1000)), "res": True},
-    {"gen": ((2, 3) for _ in xrange(10)), "res": True},
-    {"gen": u"x" * 1000, "res": False},
+    {"gen": (str(i) for i in range(1000)), "res": True},
+    {"gen": ((2, 3) for _ in range(10)), "res": True},
+    {"gen": "x" * 1000, "res": False},
     {"gen": ['1'], "res": False},
     {"gen": ('1', '2', '3'), "res": False},
     {"gen": {None: '3'}, "res": False},

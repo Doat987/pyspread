@@ -525,11 +525,11 @@ class MainWindowEventHandlers(EventMixin):
         sp = wx.StandardPaths.Get()
         pyspreadrc_path = sp.GetUserConfigDir() + "/." + config.config_filename
         try:
-            os.chmod(pyspreadrc_path, 0600)
+            os.chmod(pyspreadrc_path, 0o600)
         except OSError:
             dummyfile = open(pyspreadrc_path, "w")
             dummyfile.close()
-            os.chmod(pyspreadrc_path, 0600)
+            os.chmod(pyspreadrc_path, 0o600)
 
     # Preferences events
 
@@ -540,7 +540,7 @@ class MainWindowEventHandlers(EventMixin):
 
         if preferences:
             for key in preferences:
-                if type(config[key]) in (type(u""), type("")):
+                if type(config[key]) in (type(""), type("")):
                     config[key] = preferences[key]
                 else:
                     config[key] = ast.literal_eval(preferences[key])
@@ -756,8 +756,8 @@ class MainWindowEventHandlers(EventMixin):
 
         # Get filepath from user
         f2w = get_filetypes2wildcards(["pys", "pysu", "xls", "xlsx", "all"])
-        filetypes = f2w.keys()
-        wildcards = f2w.values()
+        filetypes = list(f2w.keys())
+        wildcards = list(f2w.values())
         wildcard = "|".join(wildcards)
 
         message = _("Choose file to open.")
@@ -826,7 +826,7 @@ class MainWindowEventHandlers(EventMixin):
         if filetype is None:
 
             f2w = get_filetypes2wildcards(["pys", "pysu", "xls", "all"])
-            __filetypes = f2w.keys()
+            __filetypes = list(f2w.keys())
 
             # Check if the file extension matches any valid save filetype
             for __filetype in __filetypes:
@@ -861,8 +861,8 @@ class MainWindowEventHandlers(EventMixin):
         # Get filepath from user
 
         f2w = get_filetypes2wildcards(["pys", "pysu", "xls", "all"])
-        filetypes = f2w.keys()
-        wildcards = f2w.values()
+        filetypes = list(f2w.keys())
+        wildcards = list(f2w.values())
 
         wildcard = "|".join(wildcards)
 
@@ -931,7 +931,7 @@ class MainWindowEventHandlers(EventMixin):
 
         # Get filepath from user
 
-        wildcards = get_filetypes2wildcards(["csv", "txt"]).values()
+        wildcards = list(get_filetypes2wildcards(["csv", "txt"]).values())
         wildcard = "|".join(wildcards)
 
         message = _("Choose file to import.")
@@ -975,8 +975,8 @@ class MainWindowEventHandlers(EventMixin):
         selection_bbox = selection.get_bbox()
 
         f2w = get_filetypes2wildcards(["csv", "pdf", "svg"])
-        filters = f2w.keys()
-        wildcards = f2w.values()
+        filters = list(f2w.keys())
+        wildcards = list(f2w.values())
 
         wildcard = "|".join(wildcards)
 
@@ -997,9 +997,9 @@ class MainWindowEventHandlers(EventMixin):
         __right = code_array.shape[1] if right is None else right + 1
 
         def data_gen(top, bottom, left, right):
-            for row in xrange(top, bottom):
+            for row in range(top, bottom):
                 yield (code_array[row, col, tab]
-                       for col in xrange(left, right))
+                       for col in range(left, right))
 
         data = data_gen(__top, __bottom, __left, __right)
         preview_data = data_gen(__top, __bottom, __left, __right)
@@ -1047,7 +1047,7 @@ class MainWindowEventHandlers(EventMixin):
     def OnExportPDF(self, event):
         """Export PDF event handler"""
 
-        wildcards = get_filetypes2wildcards(["pdf"]).values()
+        wildcards = list(get_filetypes2wildcards(["pdf"]).values())
 
         if not wildcards:
             return
@@ -1075,12 +1075,12 @@ class MainWindowEventHandlers(EventMixin):
         if not self.main_window.safe_mode:
             return
 
-        msg = _(u"You are going to approve and trust a file that\n"
-                u"you have not created yourself.\n"
-                u"After proceeding, the file is executed.\n \n"
-                u"It may harm your system as any program can.\n"
-                u"Please check all cells thoroughly before\nproceeding.\n \n"
-                u"Proceed and sign this file as trusted?")
+        msg = _("You are going to approve and trust a file that\n"
+                "you have not created yourself.\n"
+                "After proceeding, the file is executed.\n \n"
+                "It may harm your system as any program can.\n"
+                "Please check all cells thoroughly before\nproceeding.\n \n"
+                "Proceed and sign this file as trusted?")
 
         short_msg = _("Security warning")
 
@@ -1366,7 +1366,7 @@ class MainWindowEventHandlers(EventMixin):
 
         # Get filepath from user
 
-        wildcards = get_filetypes2wildcards(["py", "all"]).values()
+        wildcards = list(get_filetypes2wildcards(["py", "all"]).values())
 
         wildcard = "|".join(wildcards)
 
@@ -1395,7 +1395,7 @@ class MainWindowEventHandlers(EventMixin):
 
         # Get filepath from user
 
-        wildcards = get_filetypes2wildcards(["py", "all"]).values()
+        wildcards = list(get_filetypes2wildcards(["py", "all"]).values())
 
         wildcard = "|".join(wildcards)
 

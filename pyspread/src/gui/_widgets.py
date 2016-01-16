@@ -40,7 +40,7 @@ Provides:
 
 """
 
-import __builtin__
+import builtins
 import keyword
 from copy import copy
 import time
@@ -63,11 +63,11 @@ from src.lib._string_helpers import quote
 from src.config import config
 from src.sysvars import get_default_font, is_gtk, get_color
 
-from _events import post_command_event, EntryLineEventMixin, GridCellEventMixin
-from _events import StatusBarEventMixin, GridEventMixin, GridActionEventMixin
-from _events import MainWindowEventMixin
+from ._events import post_command_event, EntryLineEventMixin, GridCellEventMixin
+from ._events import StatusBarEventMixin, GridEventMixin, GridActionEventMixin
+from ._events import MainWindowEventMixin
 
-from icons import icons
+from .icons import icons
 
 # Use ugettext instead of getttext to avoid unicode errors
 _ = i18n.language.ugettext
@@ -745,7 +745,7 @@ class EntryLinePanel(wx.Panel, GridEventMixin, GridActionEventMixin):
         style = wx.TE_PROCESS_ENTER | wx.TE_MULTILINE
         self.entry_line = EntryLine(self, main_window, style=style)
         self.selection_toggle_button = \
-            wx.ToggleButton(self, -1, size=(24, -1), label=u"\u25F0")
+            wx.ToggleButton(self, -1, size=(24, -1), label="\u25F0")
 
         tooltip = wx.ToolTip(_("Toggles link insertion mode."))
         self.selection_toggle_button.SetToolTip(tooltip)
@@ -836,7 +836,7 @@ class EntryLine(wx.TextCtrl, EntryLineEventMixin, GridCellEventMixin,
         """Event handler for updating the content"""
 
         if event.text is None:
-            self.SetValue(u"")
+            self.SetValue("")
         else:
             self.SetValue(event.text)
 
@@ -1011,7 +1011,7 @@ class EntryLine(wx.TextCtrl, EntryLineEventMixin, GridCellEventMixin,
             current_cell_code = self.main_window.grid.code_array(current_cell)
 
             if current_cell_code is None:
-                self.SetValue(u"")
+                self.SetValue("")
             else:
                 self.SetValue(current_cell_code)
 
@@ -1161,7 +1161,7 @@ class TableChoiceIntCtrl(IntCtrl, GridEventMixin, GridActionEventMixin):
             except ValueError:
                 if self.IsLongAllowed():
                     try:
-                        return long(value)
+                        return int(value)
                     except ValueError:
                         wx.TextCtrl.SetValue(self, "0")
                         return 0

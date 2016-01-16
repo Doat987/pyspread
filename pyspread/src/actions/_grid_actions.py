@@ -360,7 +360,7 @@ class FileActions(Actions):
                     interface = Interface(self.grid.code_array, infile)
                     interface.to_code_array()
 
-                except (ValueError, xlrd.biffh.XLRDError), err:
+                except (ValueError, xlrd.biffh.XLRDError) as err:
                     post_command_event(self.main_window, self.StatusBarMsg,
                                        text=str(err))
 
@@ -383,7 +383,7 @@ class FileActions(Actions):
                 # File sucessfully opened. Approve again to show status.
                 self.approve(filepath)
 
-        except IOError, err:
+        except IOError as err:
             txt = _("Error opening file {filepath}:").format(filepath=filepath)
             txt += " " + str(err)
             post_command_event(self.main_window, self.StatusBarMsg, text=txt)
@@ -473,7 +473,7 @@ class FileActions(Actions):
         try:
             shutil.move(tmpfilepath, filepath)
 
-        except OSError, err:
+        except OSError as err:
             # No tmp file present
             post_command_event(self.main_window, self.StatusBarMsg, text=err)
 
@@ -497,7 +497,7 @@ class FileActions(Actions):
         try:
             workbook.save(filepath)
 
-        except IOError, err:
+        except IOError as err:
             try:
                 post_command_event(self.main_window, self.StatusBarMsg,
                                    text=err)
@@ -522,7 +522,7 @@ class FileActions(Actions):
                 interface = Pys(self.grid.code_array, outfile)
                 interface.from_code_array()
 
-        except (IOError, ValueError), err:
+        except (IOError, ValueError) as err:
             try:
                 post_command_event(self.main_window, self.StatusBarMsg,
                                    text=err)
@@ -550,7 +550,7 @@ class FileActions(Actions):
                 interface = Pys(self.grid.code_array, outfile)
                 interface.from_code_array()
 
-        except (IOError, ValueError), err:
+        except (IOError, ValueError) as err:
             try:
                 post_command_event(self.main_window, self.StatusBarMsg,
                                    text=err)
@@ -666,7 +666,7 @@ class TableRowActionsMixin(Actions):
         try:
             self.code_array.delete(row, no_rows, axis=0, tab=tab)
 
-        except ValueError, err:
+        except ValueError as err:
             post_command_event(self.main_window, self.StatusBarMsg,
                                text=err.message)
 
@@ -713,7 +713,7 @@ class TableColumnActionsMixin(Actions):
         try:
             self.code_array.delete(col, no_cols, axis=1, tab=tab)
 
-        except ValueError, err:
+        except ValueError as err:
             post_command_event(self.main_window, self.StatusBarMsg,
                                text=err.message)
 
@@ -753,7 +753,7 @@ class TableTabActionsMixin(Actions):
             post_command_event(self.main_window, self.ResizeGridMsg,
                                shape=shape)
 
-        except ValueError, err:
+        except ValueError as err:
             post_command_event(self.main_window, self.StatusBarMsg,
                                text=err.message)
 
@@ -935,7 +935,7 @@ class TableActions(TableRowActionsMixin, TableColumnActionsMixin,
             duplicated_row_data = row_data * (bbox_width // len(row_data) + 1)
             duplicated_row_data = duplicated_row_data[:bbox_width]
 
-            for col in xrange(len(duplicated_row_data)):
+            for col in range(len(duplicated_row_data)):
                 if (bb_top, bb_left + col) not in selection:
                     duplicated_row_data[col] = None
 
@@ -1038,7 +1038,7 @@ class TableActions(TableRowActionsMixin, TableColumnActionsMixin,
             sorted_ele = scells[i]
             return sorted_ele is None, sorted_ele
 
-        sorted_row_idxs = sorted(xrange(len(scells)), key=sorter)
+        sorted_row_idxs = sorted(range(len(scells)), key=sorter)
 
         self.replace_cells(key, sorted_row_idxs)
 
@@ -1054,7 +1054,7 @@ class TableActions(TableRowActionsMixin, TableColumnActionsMixin,
         row, col, tab = key
 
         scells = self.grid.code_array[:, col, tab]
-        sorted_row_idxs = sorted(xrange(len(scells)), key=scells.__getitem__)
+        sorted_row_idxs = sorted(range(len(scells)), key=scells.__getitem__)
         sorted_row_idxs.reverse()
 
         self.replace_cells(key, sorted_row_idxs)
@@ -1181,7 +1181,7 @@ class GridActions(Actions):
         self.grid.ForceRefresh()
 
         if status:
-            statustext = _(u"Zoomed to {0:.2f}.").format(zoom)
+            statustext = _("Zoomed to {0:.2f}.").format(zoom)
 
             post_command_event(self.main_window, self.StatusBarMsg,
                                text=statustext)
@@ -1212,7 +1212,7 @@ class GridActions(Actions):
         def split_lines(string, line_length=80):
             """Returns string that is split into lines of length line_length"""
 
-            result = u""
+            result = ""
             line = 0
 
             while len(string) > line_length * line:
@@ -1245,9 +1245,9 @@ class GridActions(Actions):
                 return
 
             try:
-                cell_res_str = unicode(cell_res)
+                cell_res_str = str(cell_res)
             except UnicodeEncodeError:
-                cell_res_str = unicode(cell_res, encoding='utf-8')
+                cell_res_str = str(cell_res, encoding='utf-8')
 
             if len(cell_res_str) > max_result_length:
                 cell_res_str = cell_res_str[:max_result_length] + ' [...]'
@@ -1411,8 +1411,8 @@ class SelectionActions(Actions):
             self.grid.SelectBlock(row_slc.start, col_slc.start,
                                   row_slc.stop - 1, col_slc.stop - 1)
         else:
-            for row in xrange(row_slc.start, row_slc.stop, row_slc.step):
-                for col in xrange(col_slc.start, col_slc.stop, col_slc.step):
+            for row in range(row_slc.start, row_slc.stop, row_slc.step):
+                for col in range(col_slc.start, col_slc.stop, col_slc.step):
                     self.select_cell(row, col, add_to_selected=True)
 
     def delete_selection(self, selection=None, mark_unredo=True):
@@ -1439,7 +1439,7 @@ class SelectionActions(Actions):
 
         current_table = self.grid.current_table
 
-        for row, col, tab in self.grid.code_array.dict_grid.keys():
+        for row, col, tab in list(self.grid.code_array.dict_grid.keys()):
             if tab == current_table and (row, col) in selection:
                 self.grid.actions.delete_cell((row, col, tab),
                                               mark_unredo=False)
@@ -1473,7 +1473,7 @@ class SelectionActions(Actions):
 
         selection = self.get_selection()
         current_table = self.grid.current_table
-        for row, col, tab in self.grid.code_array.dict_grid.keys():
+        for row, col, tab in list(self.grid.code_array.dict_grid.keys()):
             if tab == current_table and (row, col) in selection:
                 self.grid.actions.quote_code((row, col, tab),
                                              mark_unredo=False)

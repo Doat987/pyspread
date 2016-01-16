@@ -38,9 +38,9 @@ import ast
 import base64
 import bz2
 from copy import copy
-import cStringIO
+import io
 import datetime
-from itertools import imap, ifilter, product
+from itertools import product
 import re
 import sys
 from types import SliceType, IntType
@@ -58,7 +58,8 @@ import src.lib.charts as charts
 
 from src.sysvars import get_color, get_font_string
 
-from unredo import UnRedo
+from .unredo import UnRedo
+import imp
 
 
 class KeyValueStore(dict):
@@ -225,7 +226,7 @@ class DictGrid(KeyValueStore):
 
         self.cell_attributes = CellAttributes()
 
-        self.macros = u""
+        self.macros = ""
 
         self.row_heights = {}  # Keys have the format (row, table)
         self.col_widths = {}  # Keys have the format (col, table)
@@ -438,7 +439,7 @@ class DataArray(object):
     def keys(self):
         """Returns keys in self.dict_grid"""
 
-        return self.dict_grid.keys()
+        return list(self.dict_grid.keys())
 
     def pop(self, key, mark_unredo=True):
         """Pops dict_grid with undo and redo support
@@ -496,7 +497,7 @@ class DataArray(object):
 
         if any(new_axis < old_axis
                for new_axis, old_axis in zip(shape, old_shape)):
-            for key in self.dict_grid.keys():
+            for key in list(self.dict_grid.keys()):
                 if any(key_ele >= new_axis
                        for key_ele, new_axis in zip(key, shape)):
                     self.pop(key)
@@ -604,7 +605,7 @@ class DataArray(object):
                 # We have something slice-like here
 
                 length = key[axis]
-                slice_range = xrange(*key_ele.indices(length))
+                slice_range = range(*key_ele.indices(length))
                 single_keys_per_dim.append(slice_range)
 
             elif is_string_like(key_ele):
@@ -628,7 +629,7 @@ class DataArray(object):
                 old_value = self(key)
 
                 try:
-                    old_value = unicode(old_value, encoding="utf-8")
+                    old_value = str(old_value, encoding="utf-8")
                 except TypeError:
                     pass
 
@@ -678,7 +679,7 @@ class DataArray(object):
 
             # Get first element of key that is a slice
             if type(key_ele) is SliceType:
-                slc_keys = xrange(*key_ele.indices(self.dict_grid.shape[i]))
+                slc_keys = range(*key_ele.indices(self.dict_grid.shape[i]))
                 key_list = list(key)
 
                 key_list[i] = None
@@ -882,7 +883,7 @@ class DataArray(object):
         new_keys = {}
         del_keys = []
 
-        for key in self.dict_grid.keys():
+        for key in list(self.dict_grid.keys()):
             if key[axis] > insertion_point and (tab is None or tab == key[2]):
                 new_key = list(key)
                 new_key[axis] += no_to_insert
@@ -932,7 +933,7 @@ class DataArray(object):
         del_keys = []
 
         # Note that the loop goes over a list that copies all dict keys
-        for key in self.dict_grid.keys():
+        for key in list(self.dict_grid.keys()):
             if tab is None or tab == key[2]:
                 if deletion_point <= key[axis] < deletion_point + no_to_delete:
                     del_keys.append(key)
@@ -1146,11 +1147,11 @@ class CodeArray(DataArray):
         def nn(val):
             """Returns flat numpy arraz without None values"""
             try:
-                return numpy.array(filter(None, val.flat))
+                return numpy.array([_f for _f in val.flat if _f])
 
             except AttributeError:
                 # Probably no numpy array
-                return numpy.array(filter(None, val))
+                return numpy.array([_f for _f in val if _f])
 
         # Set up environment for evaluation
 
@@ -1183,14 +1184,14 @@ class CodeArray(DataArray):
             module = ast.parse(code)
             assignment_target_end = self._get_assignment_target_end(module)
 
-        except ValueError, err:
+        except ValueError as err:
             assignment_target_error = ValueError(err)
 
-        except AttributeError, err:
+        except AttributeError as err:
             # Attribute Error includes RunTimeError
             assignment_target_error = AttributeError(err)
 
-        except Exception, err:
+        except Exception as err:
             assignment_target_error = Exception(err)
 
         if assignment_target_error is None and assignment_target_end != -1:
@@ -1223,14 +1224,14 @@ class CodeArray(DataArray):
             try:
                 result = eval(expression, env, {})
 
-            except AttributeError, err:
+            except AttributeError as err:
                 # Attribute Error includes RunTimeError
                 result = AttributeError(err)
 
-            except RuntimeError, err:
+            except RuntimeError as err:
                 result = RuntimeError(err)
 
-            except Exception, err:
+            except Exception as err:
                 result = Exception(err)
 
             finally:
@@ -1275,7 +1276,7 @@ class CodeArray(DataArray):
         modules = [charts, bz2, base64, re, ast, sys, wx, numpy, datetime]
 
         for module in modules:
-            reload(module)
+            imp.reload(module)
 
     def clear_globals(self):
         """Clears all newly assigned globals"""
@@ -1288,7 +1289,7 @@ class CodeArray(DataArray):
                      'copy', 'imap', 'wx', 'ifilter', 'Selection', 'DictGrid',
                      'numpy', 'CodeArray', 'DataArray', 'datetime']
 
-        for key in globals().keys():
+        for key in list(globals().keys()):
             if key not in base_keys:
                 globals().pop(key)
 
@@ -1314,9 +1315,9 @@ class CodeArray(DataArray):
         globals().update(self._get_updated_environment())
 
         # Create file-like string to capture output
-        code_out = cStringIO.StringIO()
-        code_err = cStringIO.StringIO()
-        err_msg = cStringIO.StringIO()
+        code_out = io.StringIO()
+        code_err = io.StringIO()
+        err_msg = io.StringIO()
 
         # Capture output and errors
         sys.stdout = code_out
@@ -1389,7 +1390,7 @@ class CodeArray(DataArray):
             tuple_cmp = lambda t: t[::-1] < startkey[::-1]
 
         searchkeys = sorted(keys, key=tuple_key, reverse=reverse)
-        searchpos = sum(1 for _ in ifilter(tuple_cmp, searchkeys))
+        searchpos = sum(1 for _ in filter(tuple_cmp, searchkeys))
 
         searchkeys = searchkeys[searchpos:] + searchkeys[:searchpos]
 
@@ -1463,7 +1464,7 @@ class CodeArray(DataArray):
                 if self.string_match(code, find_string, flags) is not None:
                     return True
                 else:
-                    res_str = unicode(self[key])
+                    res_str = str(self[key])
                     return self.string_match(res_str, find_string, flags) \
                         is not None
 
@@ -1476,7 +1477,7 @@ class CodeArray(DataArray):
 
         reverse = "UP" in flags
 
-        for key in self._sorted_keys(self.keys(), startkey, reverse=reverse):
+        for key in self._sorted_keys(list(self.keys()), startkey, reverse=reverse):
             try:
                 if is_matching(key, find_string, flags):
                     return key

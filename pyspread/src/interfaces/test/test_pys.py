@@ -99,8 +99,8 @@ class TestPys(object):
         {'keystrings': ["0", "0", "0"], 'res': (0, 0, 0)},
         {'keystrings': ["0", "0"], 'res': (0, 0)},
         {'keystrings': ["-2", "-2", "23"], 'res': (-2, -2, 23)},
-        {'keystrings': map(str, xrange(100)), 'res': tuple(xrange(100))},
-        {'keystrings': map(unicode, xrange(100)), 'res': tuple(xrange(100))},
+        {'keystrings': list(map(str, range(100))), 'res': tuple(range(100))},
+        {'keystrings': list(map(str, range(100))), 'res': tuple(range(100))},
     ]
 
     @params(param_get_key)
@@ -156,8 +156,8 @@ class TestPys(object):
 
     param_code2pys = [
         {'code': "0\t0\t0\tTest\n", 'key': (0, 0, 0), 'val': "Test"},
-        {'code': "10\t0\t0\t" + u"öäüß".encode("utf-8") + "\n",
-         'key': (10, 0, 0), 'val': u"öäüß"},
+        {'code': "10\t0\t0\t" + "öäüß".encode("utf-8") + "\n",
+         'key': (10, 0, 0), 'val': "öäüß"},
         {'code': "2\t0\t0\tTest\n", 'key': (2, 0, 0), 'val': "Test"},
         {'code': "2\t0\t0\t" + "a" * 100 + '\n', 'key': (2, 0, 0),
          'val': "a" * 100},
@@ -253,10 +253,10 @@ class TestPys(object):
         assert self.code_array.dict_grid.col_widths[(col, tab)] == width
 
     param_macros2pys = [
-        {'code': u"Test"},
-        {'code': u""},
-        {'code': u"Test1\nTest2"},
-        {'code': u"öäüß"},
+        {'code': "Test"},
+        {'code': ""},
+        {'code': "Test1\nTest2"},
+        {'code': "öäüß"},
     ]
 
     @params(param_macros2pys)

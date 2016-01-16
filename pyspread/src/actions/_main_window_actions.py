@@ -178,7 +178,7 @@ class ExchangeActions(Actions):
         try:
             csv_interface.write(data)
 
-        except IOError, err:
+        except IOError as err:
             msg = _("The file {filepath} could not be fully written\n \n"
                     "Error message:\n{msg}")
             msg = msg.format(filepath=filepath, msg=err)
@@ -207,7 +207,7 @@ class ExchangeActions(Actions):
             outfile = open(filepath, "wb")
             outfile.write(data)
 
-        except IOError, err:
+        except IOError as err:
             msg = _("The file {filepath} could not be fully written\n \n"
                     "Error message:\n{msg}")
             msg = msg.format(filepath=filepath, msg=err)
@@ -449,10 +449,10 @@ class ClipboardActions(Actions):
 
         data = []
 
-        for __row in xrange(bb_top, bb_bottom + 1):
+        for __row in range(bb_top, bb_bottom + 1):
             data.append([])
 
-            for __col in xrange(bb_left, bb_right + 1):
+            for __col in range(bb_left, bb_right + 1):
                 # Only copy content if cell is in selection or
                 # if there is no selection
 
@@ -471,13 +471,13 @@ class ClipboardActions(Actions):
                     # Store data
 
                     if content is None:
-                        data[-1].append(u"")
+                        data[-1].append("")
 
                     else:
                         data[-1].append(content)
 
                 else:
-                    data[-1].append(u"")
+                    data[-1].append("")
 
         return "\n".join("\t".join(line) for line in data)
 
@@ -503,7 +503,7 @@ class ClipboardActions(Actions):
         except AttributeError:
             pass
 
-        return unicode(result_obj)
+        return str(result_obj)
 
     def copy_result(self, selection):
         """Returns result
@@ -632,7 +632,7 @@ class ClipboardActions(Actions):
         elif dim == 1:
             return [[repr(o)] for o in obj]
         elif dim == 2:
-            return [map(repr, o) for o in obj]
+            return [list(map(repr, o)) for o in obj]
 
     def paste_as(self, key, data):
         """Paste and transform data
@@ -655,19 +655,19 @@ class ClipboardActions(Actions):
         except (SyntaxError, AttributeError):
             # This is no Python code so te try to interpret it as paste data
             try:
-                obj = [map(ast.literal_eval, line.split("\t"))
+                obj = [list(map(ast.literal_eval, line.split("\t")))
                        for line in data.split("\n")]
 
-            except Exception, err:
+            except Exception as err:
                 # This must just be text.
                 try:
                     obj = [line.split('\t') for line in data.split('\n')]
-                except Exception, err:
+                except Exception as err:
                     # Now I really have no idea
                     error_msg(err)
                     return
 
-        except ValueError, err:
+        except ValueError as err:
             error_msg(err)
             return
 
@@ -676,7 +676,7 @@ class ClipboardActions(Actions):
         paste_data = self._get_pasteas_data(parameters["dim"], obj)
 
         if parameters["transpose"]:
-            paste_data = zip(*paste_data)
+            paste_data = list(zip(*paste_data))
 
         self.main_window.grid.actions.paste(key, paste_data, freq=1000)
 

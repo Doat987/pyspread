@@ -180,9 +180,9 @@ class TestCellActions(object):
 
         self.grid.actions._set_cell_attr(selection, tab, attr)
 
-        color = self.grid.code_array.cell_attributes[testcell][attr.keys()[0]]
+        color = self.grid.code_array.cell_attributes[testcell][list(attr.keys())[0]]
 
-        assert color == attr[attr.keys()[0]]
+        assert color == attr[list(attr.keys())[0]]
 
     def test_set_border_attr(self):
         """Unit test for set_border_attr"""

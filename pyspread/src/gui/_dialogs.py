@@ -41,7 +41,7 @@ Provides:
 
 """
 
-import cStringIO
+import io
 import csv
 import os
 import string
@@ -65,7 +65,7 @@ from src.lib.exception_handling import get_user_codeframe
 
 import ast
 from traceback import print_exception
-from StringIO import StringIO
+from io import StringIO
 from sys import exc_info
 
 # use ugettext instead of gettext to avoid unicode errors
@@ -176,47 +176,47 @@ class CsvParameterWidgets(object):
     """
 
     csv_params = [
-        ["encodings", types.TupleType, _("Encoding"),
+        ["encodings", tuple, _("Encoding"),
          _("CSV file encoding.")],
-        ["dialects", types.TupleType, _("Dialect"),
+        ["dialects", tuple, _("Dialect"),
          _("To make it easier to specify the format of input and output "
            "records, specific formatting parameters are grouped together "
            "into dialects.\n'excel': Defines the usual properties of an "
            "Excel-generated CSV file.\n'sniffer': Deduces the format of a "
            "CSV file\n'excel-tab': Defines the usual "
            "properties of an Excel-generated TAB-delimited file.")],
-        ["delimiter", types.StringType, _("Delimiter"),
+        ["delimiter", bytes, _("Delimiter"),
          _("A one-character string used to separate fields.")],
-        ["doublequote", types.BooleanType, _("Doublequote"),
+        ["doublequote", bool, _("Doublequote"),
          _("Controls how instances of quotechar appearing inside a "
            "field should be themselves be quoted. When True, the character "
            "is doubled. When False, the escapechar is used as a prefix to "
            "the quotechar.")],
-        ["escapechar", types.StringType, _("Escape character"),
+        ["escapechar", bytes, _("Escape character"),
          _("A one-character string used by "
            "the writer to escape the delimiter if quoting is set to "
            "QUOTE_NONE and the quotechar if doublequote is False. On "
            "reading, the escapechar removes any special meaning from the "
            "following character.")],
-        ["quotechar", types.StringType, _("Quote character"),
+        ["quotechar", bytes, _("Quote character"),
          _("A one-character string used to quote fields containing special "
            "characters, such as the delimiter or quotechar, or which "
            "contain new-line characters.")],
-        ["quoting", types.IntType, _("Quoting style"),
+        ["quoting", int, _("Quoting style"),
          _("Controls when quotes should be recognised.")],
-        ["self.has_header", types.BooleanType, _("Header present"),
+        ["self.has_header", bool, _("Header present"),
          _("Analyze the CSV file and treat the first row as strings if it "
            "appears to be a series of column headers.")],
-        ["skipinitialspace", types.BooleanType, _("Skip initial space"),
+        ["skipinitialspace", bool, _("Skip initial space"),
          _("When True, whitespace immediately following the delimiter is "
            "ignored.")],
     ]
 
     type2widget = {
-        types.StringType: wx.TextCtrl,
-        types.BooleanType: wx.CheckBox,
-        types.TupleType: wx.Choice,
-        types.IntType: wx.Choice,
+        bytes: wx.TextCtrl,
+        bool: wx.CheckBox,
+        tuple: wx.Choice,
+        int: wx.Choice,
     }
 
     standard_encodings = (
@@ -295,9 +295,9 @@ class CsvParameterWidgets(object):
                 widget.SetSelection(0)
 
             # Bind event handler to widget
-            if ptype is types.StringType or ptype is types.UnicodeType:
+            if ptype is bytes or ptype is str:
                 event_type = wx.EVT_TEXT
-            elif ptype is types.BooleanType:
+            elif ptype is bool:
                 event_type = wx.EVT_CHECKBOX
             else:
                 event_type = wx.EVT_CHOICE
@@ -351,8 +351,8 @@ class CsvParameterWidgets(object):
 
             widget = self._widget_from_p(pname, ptype)
 
-            if ptype is types.TupleType:
-                ptype = types.ObjectType
+            if ptype is tuple:
+                ptype = object
 
             digest = Digest(acceptable_types=[ptype])
 
@@ -413,9 +413,9 @@ class CsvParameterWidgets(object):
 
             widget = self._widget_from_p(pname, ptype)
 
-            if ptype is types.StringType or ptype is types.UnicodeType:
+            if ptype is bytes or ptype is str:
                 parameters[pname] = str(widget.GetValue())
-            elif ptype is types.BooleanType:
+            elif ptype is bool:
                 parameters[pname] = widget.GetValue()
             elif pname == 'quoting':
                 choice = self.choices['quoting'][widget.GetSelection()]
@@ -428,7 +428,7 @@ class CsvParameterWidgets(object):
         try:
             csv.register_dialect('user', **parameters)
 
-        except TypeError, err:
+        except TypeError as err:
             msg = _("The dialect is invalid. \n "
                     "\nError message:\n{msg}").format(msg=err)
             dlg = wx.MessageDialog(self.parent, msg, style=wx.ID_CANCEL)
@@ -445,12 +445,12 @@ class CSVPreviewGrid(wx.grid.Grid):
     shape = [10, 10]
 
     digest_types = {
-        'String': types.StringType,
-        'Unicode': types.UnicodeType,
-        'Integer': types.IntType,
-        'Float': types.FloatType,
-        'Boolean': types.BooleanType,
-        'Object': types.ObjectType,
+        'String': bytes,
+        'Unicode': str,
+        'Integer': int,
+        'Float': float,
+        'Boolean': bool,
+        'Object': object,
     }
 
     # Only add date and time if dateutil is installed
@@ -543,10 +543,10 @@ class CSVPreviewGrid(wx.grid.Grid):
 
         if choices:
             # Add Choices
-            for col in xrange(self.shape[1]):
+            for col in range(self.shape[1]):
                 choice_renderer = ChoiceRenderer(self)
                 choice_editor = wx.grid.GridCellChoiceEditor(
-                    self.digest_types.keys(), False)
+                    list(self.digest_types.keys()), False)
                 self.SetCellRenderer(has_header, col, choice_renderer)
                 self.SetCellEditor(has_header, col, choice_editor)
                 self.SetCellValue(has_header, col, digest_keys[col])
@@ -558,7 +558,7 @@ class CSVPreviewGrid(wx.grid.Grid):
             try:
                 self.dtypes.append(self.digest_types[key])
             except KeyError:
-                self.dtypes.append(types.NoneType)
+                self.dtypes.append(type(None))
 
         topleft = (has_header + 1, 0)
 
@@ -574,10 +574,10 @@ class CSVPreviewGrid(wx.grid.Grid):
         """Returns a list of the type choices"""
 
         digest_keys = []
-        for col in xrange(self.GetNumberCols()):
+        for col in range(self.GetNumberCols()):
             digest_key = self.GetCellValue(self.has_header, col)
             if digest_key == "":
-                digest_key = self.digest_types.keys()[0]
+                digest_key = list(self.digest_types.keys())[0]
             digest_keys.append(digest_key)
 
         return digest_keys
@@ -606,7 +606,7 @@ class CSVPreviewTextCtrl(wx.TextCtrl):
 
         """
 
-        csvfile = cStringIO.StringIO()
+        csvfile = io.StringIO()
         csvwriter = csv.writer(csvfile, dialect=dialect)
 
         for i, line in enumerate(data):
@@ -678,7 +678,7 @@ class CsvImportDialog(wx.Dialog):
             sizer_buttons.Add(button, 0, wx.ALL | wx.EXPAND, 5)
 
         sizer_buttons.AddGrowableRow(0)
-        for col in xrange(3):
+        for col in range(3):
             sizer_buttons.AddGrowableCol(col)
 
         # Adding main components
@@ -758,7 +758,7 @@ class CsvExportDialog(wx.Dialog):
             sizer_buttons.Add(button, 0, wx.ALL | wx.EXPAND, 5)
 
         sizer_buttons.AddGrowableRow(0)
-        for col in xrange(3):
+        for col in range(3):
             sizer_buttons.AddGrowableCol(col)
 
         # Adding main components
@@ -1169,9 +1169,9 @@ class AboutDialog(object):
         info.Developers = ["Martin Manns", "Jason Sexauer", "Vova Kolobok"]
         info.DocWriters = ["Martin Manns", "Bosko Markovic"]
         info.Translators = ["Joe Hansen", "Mark Haanen", "Yuri Chornoivan",
-                            u"Mario Blättermann", "Christian Kirbach",
+                            "Mario Blättermann", "Christian Kirbach",
                             "Martin Manns", "Andreas Noteng",
-                            "Enrico Nicoletto", u"Frédéric Marchal"]
+                            "Enrico Nicoletto", "Frédéric Marchal"]
 
         license_file = open(get_program_path() + "/COPYING", "r")
         license_text = license_file.read()
@@ -1238,65 +1238,65 @@ class PreferencesDialog(wx.Dialog):
 
     parameters = (
         ("max_unredo", {
-            "label": _(u"Max. undo steps"),
-            "tooltip": _(u"Maximum number of undo steps"),
+            "label": _("Max. undo steps"),
+            "tooltip": _("Maximum number of undo steps"),
             "widget": wx.lib.intctrl.IntCtrl,
             "widget_params": {"min": 0, "allow_long": True},
             "prepocessor": int,
         }),
         ("grid_rows", {
-            "label": _(u"Grid rows"),
-            "tooltip": _(u"Number of grid rows when starting pyspread"),
+            "label": _("Grid rows"),
+            "tooltip": _("Number of grid rows when starting pyspread"),
             "widget": wx.lib.intctrl.IntCtrl,
             "widget_params": {"min": 0, "allow_long": True},
             "prepocessor": int,
         }),
         ("grid_columns", {
-            "label": _(u"Grid columns"),
-            "tooltip": _(u"Number of grid columns when starting pyspread"),
+            "label": _("Grid columns"),
+            "tooltip": _("Number of grid columns when starting pyspread"),
             "widget": wx.lib.intctrl.IntCtrl,
             "widget_params": {"min": 0, "allow_long": True},
             "prepocessor": int,
         }),
         ("grid_tables", {
-            "label": _(u"Grid tables"),
-            "tooltip": _(u"Number of grid tables when starting pyspread"),
+            "label": _("Grid tables"),
+            "tooltip": _("Number of grid tables when starting pyspread"),
             "widget": wx.lib.intctrl.IntCtrl,
             "widget_params": {"min": 0, "allow_long": True},
             "prepocessor": int,
         }),
         ("max_result_length", {
-            "label": _(u"Max. result length"),
-            "tooltip": _(u"Maximum length of cell result string"),
+            "label": _("Max. result length"),
+            "tooltip": _("Maximum length of cell result string"),
             "widget": wx.lib.intctrl.IntCtrl,
             "widget_params": {"min": 0, "allow_long": True},
             "prepocessor": int,
         }),
         ("timeout", {
-            "label": _(u"Timeout"),
-            "tooltip": _(u"Maximum time that an evaluation process may take."),
+            "label": _("Timeout"),
+            "tooltip": _("Maximum time that an evaluation process may take."),
             "widget": wx.lib.intctrl.IntCtrl,
             "widget_params": {"min": 0, "allow_long": True},
             "prepocessor": int,
         }),
         ("timer_interval", {
-            "label": _(u"Timer interval"),
-            "tooltip": _(u"Interval for periodic updating of timed cells."),
+            "label": _("Timer interval"),
+            "tooltip": _("Interval for periodic updating of timed cells."),
             "widget": wx.lib.intctrl.IntCtrl,
             "widget_params": {"min": 100, "allow_long": True},
             "prepocessor": int,
         }),
         ("gpg_key_fingerprint", {
-            "label": _(u"GPG fingerprint"),
-            "tooltip": _(u"Fingerprint of the GPG key for signing files"),
+            "label": _("GPG fingerprint"),
+            "tooltip": _("Fingerprint of the GPG key for signing files"),
             "widget": wx.TextCtrl,
             "widget_params": {},
-            "prepocessor": unicode,
+            "prepocessor": str,
         }),
     )
 
     def __init__(self, *args, **kwargs):
-        kwargs["title"] = _(u"Preferences")
+        kwargs["title"] = _("Preferences")
         kwargs["style"] = \
             wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER | wx.THICK_FRAME
         wx.Dialog.__init__(self, *args, **kwargs)
@@ -1342,7 +1342,7 @@ class PreferencesDialog(wx.Dialog):
         self.grid_sizer.Fit(self)
         self.grid_sizer.AddGrowableCol(1)
 
-        for row in xrange(len(self.parameters)):
+        for row in range(len(self.parameters)):
             self.grid_sizer.AddGrowableRow(row)
 
         self.Layout()

@@ -173,7 +173,7 @@ def encode_gen(line, encoding="utf-8"):
     """
 
     for ele in line:
-        if isinstance(ele, types.UnicodeType):
+        if isinstance(ele, str):
             yield ele.encode(encoding)
         else:
             yield ele
@@ -217,7 +217,7 @@ class Digest(object):
         def make_string(obj):
             """Makes a string object from any object"""
 
-            if type(obj) is types.StringType:
+            if type(obj) is bytes:
                 return obj
 
             if obj is None:
@@ -231,18 +231,18 @@ class Digest(object):
         def make_unicode(obj):
             """Makes a unicode object from any object"""
 
-            if type(obj) is types.UnicodeType:
+            if type(obj) is str:
                 return obj
 
-            elif isinstance(obj, types.StringType):
+            elif isinstance(obj, bytes):
                 # Try UTF-8
                 return obj.decode(self.encoding)
 
             if obj is None:
-                return u""
+                return ""
 
             try:
-                return unicode(obj)
+                return str(obj)
 
             except Exception:
                 return repr(obj)
@@ -302,13 +302,13 @@ class Digest(object):
 
         self.typehandlers = {
             None: repr,
-            types.StringType: make_string,
-            types.UnicodeType: make_unicode,
-            types.SliceType: make_slice,
-            types.BooleanType: bool,
-            types.ObjectType: make_object,
-            types.IntType: int,
-            types.FloatType: float,
+            bytes: make_string,
+            str: make_unicode,
+            slice: make_slice,
+            bool: bool,
+            object: make_object,
+            int: int,
+            float: float,
             types.CodeType: make_object,
             datetime.date: make_date,
             datetime.datetime: make_datetime,
@@ -340,13 +340,13 @@ class Digest(object):
         try:
             acceptable_obj = self.typehandlers[target_type](orig_obj)
             return acceptable_obj
-        except TypeError, err:
+        except TypeError as err:
             errormessage += str(err)
 
         try:
             acceptable_obj = self.typehandlers[self.fallback_type](orig_obj)
             return acceptable_obj
-        except TypeError, err:
+        except TypeError as err:
             errormessage += str(err)
 
         return errormessage

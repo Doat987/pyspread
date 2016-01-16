@@ -32,7 +32,7 @@ Provides
 import wx
 import string
 
-from _events import post_command_event
+from ._events import post_command_event
 from src.gui._widgets import GridEventMixin
 from src.lib._string_helpers import quote
 
@@ -51,7 +51,7 @@ class GridCellEditor(wx.grid.PyGridCellEditor, GridEventMixin):
         wx.grid.PyGridCellEditor.__init__(self)
 
         self.max_char_width = max_char_width
-        self.startValue = u""
+        self.startValue = ""
 
     def Create(self, parent, id, evtHandler):
         """
@@ -156,19 +156,19 @@ class GridCellEditor(wx.grid.PyGridCellEditor, GridEventMixin):
 
         try:
             start_value_list = [start_value[i:i+self.max_char_width]
-                                for i in xrange(0, len(start_value),
+                                for i in range(0, len(start_value),
                                                 self.max_char_width)]
             startValue = "\n".join(start_value_list)
             self.startValue = startValue
 
         except TypeError:
-            self.startValue = u""
+            self.startValue = ""
 
         # Set up the textcontrol to look like this cell (TODO: Does not work)
         try:
-            self._tc.SetValue(unicode(startValue))
+            self._tc.SetValue(str(startValue))
         except (TypeError, AttributeError, UnboundLocalError):
-            self._tc.SetValue(u"")
+            self._tc.SetValue("")
 
         self._tc.SetFont(grid.GetCellFont(row, col))
         self._tc.SetBackgroundColour(grid.GetCellBackgroundColour(row, col))

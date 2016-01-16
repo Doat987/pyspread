@@ -71,14 +71,14 @@ import wx.lib.colourselect as csel
 from wx.lib.intctrl import IntCtrl, EVT_INT
 import wx.lib.agw.flatnotebook as fnb
 
-from _widgets import LineStyleComboBox, MarkerStyleComboBox
-from _widgets import CoordinatesComboBox
-from _events import post_command_event, ChartDialogEventMixin
+from ._widgets import LineStyleComboBox, MarkerStyleComboBox
+from ._widgets import CoordinatesComboBox
+from ._events import post_command_event, ChartDialogEventMixin
 import src.lib.i18n as i18n
 import src.lib.charts as charts
 from src.lib.parsers import color2code, code2color, parse_dict_strings
 from src.lib.parsers import unquote_string
-from icons import icons
+from .icons import icons
 from sysvars import get_default_font, get_color
 
 # Use ugettext instead of getttext to avoid unicode errors
@@ -154,7 +154,7 @@ class IntegerEditor(IntCtrl, ChartDialogEventMixin):
     def get_code(self):
         """Returns string representation of Integer"""
 
-        return unicode(self.GetValue())
+        return str(self.GetValue())
 
     def set_code(self, code):
         """Sets widget from code string
@@ -235,7 +235,7 @@ class TextEditor(wx.Panel, ChartDialogEventMixin):
         wx.FONTSTYLE_SLANT: "oblique",
     }
 
-    style_mpl2wx = dict((v, k) for k, v in style_wx2mpl.iteritems())
+    style_mpl2wx = dict((v, k) for k, v in style_wx2mpl.items())
 
     weight_wx2mpl = {
         wx.FONTWEIGHT_BOLD: "bold",
@@ -243,16 +243,16 @@ class TextEditor(wx.Panel, ChartDialogEventMixin):
         wx.FONTWEIGHT_LIGHT: "light",
     }
 
-    weight_mpl2wx = dict((v, k) for k, v in weight_wx2mpl.iteritems())
+    weight_mpl2wx = dict((v, k) for k, v in weight_wx2mpl.items())
 
     def __init__(self, *args, **kwargs):
         wx.Panel.__init__(self, *args, **kwargs)
 
         self.textctrl = wx.TextCtrl(self, -1)
-        self.fontbutton = wx.Button(self, -1, label=u"\u2131", size=(24, 24))
+        self.fontbutton = wx.Button(self, -1, label="\u2131", size=(24, 24))
         self.colorselect = csel.ColourSelect(self, -1, size=(24, 24))
 
-        self.value = u""
+        self.value = ""
 
         self.chosen_font = None
 
@@ -439,8 +439,8 @@ class TickParamsEditor(wx.Panel, ChartDialogEventMixin):
     choice_labels = [_("Inside"), _("Outside"), _("Both")]
     choice_params = ["in", "out", "inout"]
 
-    choice_label2param = dict(zip(choice_labels, choice_params))
-    choice_param2label = dict(zip(choice_params, choice_labels))
+    choice_label2param = dict(list(zip(choice_labels, choice_params)))
+    choice_param2label = dict(list(zip(choice_params, choice_labels)))
 
     def __init__(self, *args, **kwargs):
         wx.Panel.__init__(self, *args, **kwargs)
@@ -894,14 +894,14 @@ class PlotAttributesPanel(SeriesAttributesPanelBase):
     ]
 
     tooltips = {
-        "label": _(u"String or anything printable with ‘%s’ conversion"),
-        "xdata": _(u"The data np.array for x\n"
-                   u"Code must eval to 1D array."),
-        "ydata": _(u"The data np.array for y\n"
-                   u"Code must eval to 1D array."),
-        "linewidth": _(u"The line width in points"),
-        "marker": _(u"The line marker"),
-        "markersize": _(u"The marker size in points"),
+        "label": _("String or anything printable with ‘%s’ conversion"),
+        "xdata": _("The data np.array for x\n"
+                   "Code must eval to 1D array."),
+        "ydata": _("The data np.array for y\n"
+                   "Code must eval to 1D array."),
+        "linewidth": _("The line width in points"),
+        "marker": _("The line marker"),
+        "markersize": _("The marker size in points"),
     }
 
 
@@ -930,11 +930,11 @@ class BarAttributesPanel(SeriesAttributesPanelBase):
     ]
 
     tooltips = {
-        "label": _(u"String or anything printable with ‘%s’ conversion"),
-        "left": _(u"The x coordinates of the left sides of the bars"),
-        "height": _(u"The heights of the bars"),
-        "width": _(u"The widths of the bars"),
-        "bottom": _(u"The y coordinates of the bottom edges of the bars"),
+        "label": _("String or anything printable with ‘%s’ conversion"),
+        "left": _("The x coordinates of the left sides of the bars"),
+        "height": _("The heights of the bars"),
+        "width": _("The widths of the bars"),
+        "bottom": _("The y coordinates of the bottom edges of the bars"),
     }
 
 
@@ -961,16 +961,16 @@ class BoxplotAttributesPanel(SeriesAttributesPanelBase):
     ]
 
     tooltips = {
-        "x": _(u"An array or a sequence of vectors"),
-        "widths": _(u"Either a scalar or a vector and sets the width of each "
-                    u"box\nThe default is 0.5, or\n0.15*(distance between "
-                    u"extreme positions)\nif that is smaller"),
-        "vert": _(u"If True then boxes are drawn vertical\n"
-                  u"If False then boxes are drawn horizontal"),
-        "sym": _(u"The symbol for flier points\nEnter an empty string (‘’)\n"
-                 u"if you don’t want to show fliers"),
-        "notch": _(u"False produces a rectangular box plot\n"
-                   u"True produces a notched box plot"),
+        "x": _("An array or a sequence of vectors"),
+        "widths": _("Either a scalar or a vector and sets the width of each "
+                    "box\nThe default is 0.5, or\n0.15*(distance between "
+                    "extreme positions)\nif that is smaller"),
+        "vert": _("If True then boxes are drawn vertical\n"
+                  "If False then boxes are drawn horizontal"),
+        "sym": _("The symbol for flier points\nEnter an empty string (‘’)\n"
+                 "if you don’t want to show fliers"),
+        "notch": _("False produces a rectangular box plot\n"
+                   "True produces a notched box plot"),
     }
 
 
@@ -998,16 +998,16 @@ class HistogramAttributesPanel(SeriesAttributesPanelBase):
     ]
 
     tooltips = {
-        "label": _(u"String or anything printable with ‘%s’ conversion"),
-        "x": _(u"Histogram data series\nMultiple data sets can be provided "
-               u"as a list or as a 2-D ndarray in which each column"
-               u"is a dataset. Note that the ndarray form is transposed "
-               u"relative to the list form."),
-        "bins": _(u"Either an integer number of bins or a bin sequence"),
-        "normed": _(u"If True then the first element is the counts normalized"
-                    u"to form a probability density, i.e., n/(len(x)*dbin)."),
-        "cumulative": _(u"If True then each bin gives the counts in that bin"
-                        u"\nplus all bins for smaller values."),
+        "label": _("String or anything printable with ‘%s’ conversion"),
+        "x": _("Histogram data series\nMultiple data sets can be provided "
+               "as a list or as a 2-D ndarray in which each column"
+               "is a dataset. Note that the ndarray form is transposed "
+               "relative to the list form."),
+        "bins": _("Either an integer number of bins or a bin sequence"),
+        "normed": _("If True then the first element is the counts normalized"
+                    "to form a probability density, i.e., n/(len(x)*dbin)."),
+        "cumulative": _("If True then each bin gives the counts in that bin"
+                        "\nplus all bins for smaller values."),
     }
 
 
@@ -1034,21 +1034,21 @@ class PieAttributesPanel(SeriesAttributesPanelBase):
     ]
 
     tooltips = {
-        "x": _(u"Pie chart data\nThe fractional area of each wedge is given "
-               u"by x/sum(x)\nThe wedges are plotted counterclockwise"),
-        "labels": _(u"Sequence of wedge label strings"),
-        "colors": _(u"Sequence of matplotlib color args through which the pie "
-                    u"cycles.\nSupported strings are:\n'b': blue\n'g': green\n"
-                    u"'r': red\n'c': cyan\n'm': magenta\n'y': yellow\n'k': "
-                    u"black\n'w': white\nGray shades can be given as a string"
-                    u"that encodes a float in the 0-1 range, e.g.: '0.75'. "
-                    u"You can also specify the color with an html hex string "
-                    u"as in: '#eeefff'. Finally, legal html names for colors, "
-                    u"such as 'red', 'burlywood' and 'chartreuse' are "
-                    u"supported."),
-        "startangle": _(u"Rotates the start of the pie chart by angle degrees "
-                        u"counterclockwise from the x-axis."),
-        "shadow": _(u"If True then a shadow beneath the pie is drawn"),
+        "x": _("Pie chart data\nThe fractional area of each wedge is given "
+               "by x/sum(x)\nThe wedges are plotted counterclockwise"),
+        "labels": _("Sequence of wedge label strings"),
+        "colors": _("Sequence of matplotlib color args through which the pie "
+                    "cycles.\nSupported strings are:\n'b': blue\n'g': green\n"
+                    "'r': red\n'c': cyan\n'm': magenta\n'y': yellow\n'k': "
+                    "black\n'w': white\nGray shades can be given as a string"
+                    "that encodes a float in the 0-1 range, e.g.: '0.75'. "
+                    "You can also specify the color with an html hex string "
+                    "as in: '#eeefff'. Finally, legal html names for colors, "
+                    "such as 'red', 'burlywood' and 'chartreuse' are "
+                    "supported."),
+        "startangle": _("Rotates the start of the pie chart by angle degrees "
+                        "counterclockwise from the x-axis."),
+        "shadow": _("If True then a shadow beneath the pie is drawn"),
     }
 
 
@@ -1072,11 +1072,11 @@ class AnnotateAttributesPanel(SeriesAttributesPanelBase):
     ]
 
     tooltips = {
-        "s": _(u"Annotation text"),
-        "xy": _(u"Point that is annotated"),
-        "xycoords": _(u"String that indicates the coordinates of xy"),
-        "xytext": _(u"Location of annotation text"),
-        "textcoords": _(u"String that indicates the coordinates of xytext."),
+        "s": _("Annotation text"),
+        "xy": _("Point that is annotated"),
+        "xycoords": _("String that indicates the coordinates of xy"),
+        "xytext": _("Location of annotation text"),
+        "textcoords": _("String that indicates the coordinates of xytext."),
     }
 
 
@@ -1111,36 +1111,36 @@ class ContourAttributesPanel(SeriesAttributesPanelBase):
     ]
 
     tooltips = {
-        "X": _(u"X coordinates of the surface"),
-        "Y": _(u"Y coordinates of the surface"),
-        "Z": _(u"Z coordinates of the surface (contour height)"),
-        "colors":  _(u"If None, the colormap specified by cmap will be used.\n"
-                     u"If a string, like ‘r’ or ‘red’, all levels will be "
-                     u"plotted in this color.\nIf a tuple of matplotlib color "
-                     u"args (string, float, rgb, etc), different levels will "
-                     u"be plotted in different colors in the order"
-                     u" specified."),
-        "alpha": _(u"The alpha blending value"),
-        "linestyles": _(u"Contour line style"),
-        "linewidths": _(u"All contour levels will be plotted with this "
-                        u"linewidth."),
-        "contour_labels": _(u"Adds contour labels"),
-        "contour_label_fontsize": _(u"Contour font label size in points"),
-        "hatches": _(u"A list of cross hatch patterns to use on the filled "
-                     u"areas. A hatch can be one of:\n"
-                     u"/   - diagonal hatching\n"
-                     u"\   - back diagonal\n"
-                     u"|   - vertical\n"
-                     u"-   - horizontal\n"
-                     u"+   - crossed\n"
-                     u"x   - crossed diagonal\n"
-                     u"o   - small circle\n"
-                     u"O   - large circle\n"
-                     u".   - dots\n"
-                     u"*   - stars\n"
-                     u"Letters can be combined, in which case all the "
-                     u"specified hatchings are done. If same letter repeats, "
-                     u"it increases the density of hatching of that pattern."),
+        "X": _("X coordinates of the surface"),
+        "Y": _("Y coordinates of the surface"),
+        "Z": _("Z coordinates of the surface (contour height)"),
+        "colors":  _("If None, the colormap specified by cmap will be used.\n"
+                     "If a string, like ‘r’ or ‘red’, all levels will be "
+                     "plotted in this color.\nIf a tuple of matplotlib color "
+                     "args (string, float, rgb, etc), different levels will "
+                     "be plotted in different colors in the order"
+                     " specified."),
+        "alpha": _("The alpha blending value"),
+        "linestyles": _("Contour line style"),
+        "linewidths": _("All contour levels will be plotted with this "
+                        "linewidth."),
+        "contour_labels": _("Adds contour labels"),
+        "contour_label_fontsize": _("Contour font label size in points"),
+        "hatches": _("A list of cross hatch patterns to use on the filled "
+                     "areas. A hatch can be one of:\n"
+                     "/   - diagonal hatching\n"
+                     "\   - back diagonal\n"
+                     "|   - vertical\n"
+                     "-   - horizontal\n"
+                     "+   - crossed\n"
+                     "x   - crossed diagonal\n"
+                     "o   - small circle\n"
+                     "O   - large circle\n"
+                     ".   - dots\n"
+                     "*   - stars\n"
+                     "Letters can be combined, in which case all the "
+                     "specified hatchings are done. If same letter repeats, "
+                     "it increases the density of hatching of that pattern."),
     }
 
 
@@ -1177,38 +1177,38 @@ class SankeyAttributesPanel(SeriesAttributesPanelBase):
     ]
 
     tooltips = {
-        "flows": _(u"Array of flow values.\nBy convention, inputs are positive"
-                   u" and outputs are negative."),
-        "orientations": _(u"List of orientations of the paths.\nValid values "
-                          u"are 1 (from/to the top), 0 (from/to the left or "
-                          u"right), or -1 (from/to the bottom).\nIf "
-                          u"orientations == 0, inputs will break in from the "
-                          u"left and outputs will break away to the right."),
-        "labels": _(u"List of specifications of the labels for the flows.\n"
-                    u"Each value may be None (no labels), ‘’ (just label the "
-                    u"quantities), or a labeling string. If a single value is "
-                    u"provided, it will be applied to all flows. If an entry "
-                    u"is a non-empty string, then the quantity for the "
-                    u"corresponding flow will be shown below the string. "
-                    u"However, if the unit of the main diagram is None, then "
-                    u"quantities are never shown, regardless of the value of "
-                    u"this argument."),
-        "unit": _(u"String representing the physical unit associated with "
-                  u"the flow quantities.\nIf unit is None, then none of the "
-                  u"quantities are labeled."),
-        "format": _(u"A Python number formatting string to be used in "
-                    u"labeling the flow as a quantity (i.e., a number times a "
-                    u"unit, where the unit is given)"),
-        "rotation": _(u"Angle of rotation of the diagram [deg]"),
-        "gap": _(u"Space between paths that break in/break away to/from the "
-                 u"top or bottom."),
-        "radius": _(u"Inner radius of the vertical paths"),
-        "shoulder": _(u"Size of the shoulders of output arrows"),
-        "offset": _(u"Text offset (from the dip or tip of the arrow)"),
-        "head_angle": _(u"Angle of the arrow heads (and negative of the angle "
-                        u"of the tails) [deg]"),
-        "edgecolor": _(u"Edge color of Sankey diagram"),
-        "facecolor": _(u"Face color of Sankey diagram"),
+        "flows": _("Array of flow values.\nBy convention, inputs are positive"
+                   " and outputs are negative."),
+        "orientations": _("List of orientations of the paths.\nValid values "
+                          "are 1 (from/to the top), 0 (from/to the left or "
+                          "right), or -1 (from/to the bottom).\nIf "
+                          "orientations == 0, inputs will break in from the "
+                          "left and outputs will break away to the right."),
+        "labels": _("List of specifications of the labels for the flows.\n"
+                    "Each value may be None (no labels), ‘’ (just label the "
+                    "quantities), or a labeling string. If a single value is "
+                    "provided, it will be applied to all flows. If an entry "
+                    "is a non-empty string, then the quantity for the "
+                    "corresponding flow will be shown below the string. "
+                    "However, if the unit of the main diagram is None, then "
+                    "quantities are never shown, regardless of the value of "
+                    "this argument."),
+        "unit": _("String representing the physical unit associated with "
+                  "the flow quantities.\nIf unit is None, then none of the "
+                  "quantities are labeled."),
+        "format": _("A Python number formatting string to be used in "
+                    "labeling the flow as a quantity (i.e., a number times a "
+                    "unit, where the unit is given)"),
+        "rotation": _("Angle of rotation of the diagram [deg]"),
+        "gap": _("Space between paths that break in/break away to/from the "
+                 "top or bottom."),
+        "radius": _("Inner radius of the vertical paths"),
+        "shoulder": _("Size of the shoulders of output arrows"),
+        "offset": _("Text offset (from the dip or tip of the arrow)"),
+        "head_angle": _("Angle of the arrow heads (and negative of the angle "
+                        "of the tails) [deg]"),
+        "edgecolor": _("Edge color of Sankey diagram"),
+        "facecolor": _("Face color of Sankey diagram"),
     }
 
 
@@ -1217,7 +1217,7 @@ class FigureAttributesPanel(SeriesAttributesPanelBase):
 
     # strftime doc taken from Python documentation
 
-    strftime_doc = _(u"""
+    strftime_doc = _("""
 Code 	Meaning
 %a 	Locale’s abbreviated weekday name.
 %A 	Locale’s full weekday name.
@@ -1279,16 +1279,16 @@ Code 	Meaning
     ]
 
     tooltips = {
-        "title": _(u"The figure title"),
-        "xlabel": _(u"The label for the x axis"),
-        "xlim": _(u"The data limits for the x axis\nFormat: (xmin, xmax)"),
-        "ylabel": _(u"The label for the y axis"),
-        "ylim": _(u"The data limits for the y axis\nFormat: (ymin, ymax)"),
-        "xdate_format": _(u"If non-empty then the x axis is displays dates.\n"
-                          u"Enter an unquoted strftime() format string."
-                          u"\n") + strftime_doc,
-        "xtick_labels": _(u"Custom labels for the x axis."),
-        "ytick_labels": _(u"Custom labels for the y axis."),
+        "title": _("The figure title"),
+        "xlabel": _("The label for the x axis"),
+        "xlim": _("The data limits for the x axis\nFormat: (xmin, xmax)"),
+        "ylabel": _("The label for the y axis"),
+        "ylim": _("The data limits for the y axis\nFormat: (ymin, ymax)"),
+        "xdate_format": _("If non-empty then the x axis is displays dates.\n"
+                          "Enter an unquoted strftime() format string."
+                          "\n") + strftime_doc,
+        "xtick_labels": _("Custom labels for the x axis."),
+        "ytick_labels": _("Custom labels for the y axis."),
     }
 
 
@@ -1432,7 +1432,7 @@ class AllSeriesPanel(wx.Panel, ChartDialogEventMixin):
         """Yields series panels of the chart's series"""
 
         no_pages = self.series_notebook.GetPageCount()
-        for page_number in xrange(no_pages - 1):
+        for page_number in range(no_pages - 1):
             yield self.series_notebook.GetPage(page_number)
 
     def update(self, series_list):
@@ -1577,8 +1577,8 @@ class ChartDialog(wx.Dialog, ChartDialogEventMixin):
     def __set_properties(self):
         self.SetTitle(_("Insert chart"))
 
-        self.figure_attributes_staticbox = wx.StaticBox(self, -1, _(u"Axes"))
-        self.series_staticbox = wx.StaticBox(self, -1, _(u"Series"))
+        self.figure_attributes_staticbox = wx.StaticBox(self, -1, _("Axes"))
+        self.series_staticbox = wx.StaticBox(self, -1, _("Series"))
 
     def __do_layout(self):
         main_sizer = wx.FlexGridSizer(2, 1, 2, 2)
@@ -1687,9 +1687,9 @@ class ChartDialog(wx.Dialog, ChartDialogEventMixin):
 
         attributes = []
         strip = lambda s: s.strip('u').strip("'").strip('"')
-        for attr_dict in parse_dict_strings(unicode(code).strip()[19:-1]):
+        for attr_dict in parse_dict_strings(str(code).strip()[19:-1]):
             attrs = list(strip(s) for s in parse_dict_strings(attr_dict[1:-1]))
-            attributes.append(dict(zip(attrs[::2], attrs[1::2])))
+            attributes.append(dict(list(zip(attrs[::2], attrs[1::2]))))
 
         if not attributes:
             return
@@ -1725,7 +1725,7 @@ class ChartDialog(wx.Dialog, ChartDialogEventMixin):
 
             """
 
-            result = u"{"
+            result = "{"
 
             for key in attr_dict:
                 code = attr_dict[key]
@@ -1764,7 +1764,7 @@ class ChartDialog(wx.Dialog, ChartDialogEventMixin):
 
                 result += repr(key) + ": " + code + ", "
 
-            result = result[:-2] + u"}"
+            result = result[:-2] + "}"
 
             return result
 

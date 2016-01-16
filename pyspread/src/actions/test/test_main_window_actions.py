@@ -76,7 +76,7 @@ class TestCsvInterface(object):
 
         csv_gen = self._get_csv_gen(self.test_filename)
 
-        column = xrange(100)
+        column = range(100)
 
         cell_gen = csv_gen._get_csv_cells_gen(column)
 
@@ -107,7 +107,7 @@ class TestCsvInterface(object):
         csv_gen = self._get_csv_gen(self.test_filename)
         csv_gen.path = self.test_filename3
 
-        csv_gen.write(xrange(100) for _ in xrange(100))
+        csv_gen.write(range(100) for _ in range(100))
 
         infile = open(self.test_filename3)
         content = infile.read()
@@ -162,7 +162,7 @@ class TestTxtGenerator(object):
         has_value_error = False
 
         try:
-            print [list(ele) for ele in txt_gen]
+            print([list(ele) for ele in txt_gen])
 
         except ValueError:
             has_value_error = True
@@ -216,8 +216,8 @@ class TestClipboardActions(object):
 
         (top, left), (bottom, right) = selection.get_bbox()
 
-        for row in xrange(top, bottom + 1):
-            for col in xrange(left, right + 1):
+        for row in range(top, bottom + 1):
+            for col in range(left, right + 1):
                 if (row, col) in selection:
                     key = row, col, 0
                     assert self.code_array[key] is None

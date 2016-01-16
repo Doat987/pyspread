@@ -130,7 +130,7 @@ class Xls(object):
         if tabs > self.xls_max_tabs:
             tabs = self.xls_max_tabs
 
-        for tab in xrange(tabs):
+        for tab in range(tabs):
             worksheet = self.workbook.add_sheet(str(tab))
             worksheets.append(worksheet)
 
@@ -188,8 +188,8 @@ class Xls(object):
         for ((bb_top, bb_left), (bb_bottom, bb_right)), __tab in bboxes:
             __bb_bottom = min(bb_bottom, max_shape[0])
             __bb_right = min(bb_right, max_shape[1])
-            for __row, __col in product(xrange(bb_top, __bb_bottom + 1),
-                                        xrange(bb_left, __bb_right + 1)):
+            for __row, __col in product(range(bb_top, __bb_bottom + 1),
+                                        range(bb_left, __bb_right + 1)):
                 cells.append((__row, __col, __tab))
 
         cell_set = set(cells)
@@ -225,7 +225,7 @@ class Xls(object):
         }
 
         rows, cols = worksheet.nrows, worksheet.ncols
-        for row, col in product(xrange(rows), xrange(cols)):
+        for row, col in product(range(rows), range(cols)):
             cell_type = worksheet.cell_type(row, col)
             cell_value = worksheet.cell_value(row, col)
 
@@ -609,9 +609,9 @@ class Xls(object):
             self.code_array.cell_attributes.append((selection, tab, attrs))
 
         # Which cell comprise which format ids
-        xf2cell = dict((xfid, []) for xfid in xrange(self.workbook.xfcount))
+        xf2cell = dict((xfid, []) for xfid in range(self.workbook.xfcount))
         rows, cols = worksheet.nrows, worksheet.ncols
-        for row, col in product(xrange(rows), xrange(cols)):
+        for row, col in product(range(rows), range(cols)):
             xfid = worksheet.cell_xf_index(row, col)
             xf2cell[xfid].append((row, col))
 
@@ -683,7 +683,7 @@ class Xls(object):
             }
 
             def constant_factory(value):
-                return repeat(value).next
+                return repeat(value).__next__
 
             border_line_style2width = defaultdict(constant_factory(1))
             border_line_style2width.update(__border_line_style2width)
@@ -787,7 +787,7 @@ class Xls(object):
     def _xls2row_heights(self, worksheet, tab):
         """Updates row_heights in code_array"""
 
-        for row in xrange(worksheet.nrows):
+        for row in range(worksheet.nrows):
             try:
                 height_points = worksheet.rowinfo_map[row].height / 20.0
                 height_inches = height_points / 72.0
@@ -821,7 +821,7 @@ class Xls(object):
     def _xls2col_widths(self, worksheet, tab):
         """Updates col_widths in code_array"""
 
-        for col in xrange(worksheet.ncols):
+        for col in range(worksheet.ncols):
             try:
                 width_0_char = worksheet.colinfo_map[col].width / 256.0
                 width_0 = get_default_text_extent("0")[0]

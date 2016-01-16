@@ -129,11 +129,11 @@ class GridCairoRenderer(object):
 
         merge_area = self._get_merge_area((row, col, tab))
 
-        for __row in xrange(top_row, row):
+        for __row in range(top_row, row):
             __row_height = self.code_array.get_row_height(__row, tab)
             pos_y += __row_height
 
-        for __col in xrange(left_col, col):
+        for __col in range(left_col, col):
             __col_width = self.code_array.get_col_width(__col, tab)
             pos_x += __col_width
 
@@ -147,9 +147,9 @@ class GridCairoRenderer(object):
             if top == row and left == col:
                 # Set rect to merge area
                 heights = (self.code_array.get_row_height(__row, tab)
-                           for __row in xrange(top, bottom+1))
+                           for __row in range(top, bottom+1))
                 widths = (self.code_array.get_col_width(__col, tab)
-                          for __col in xrange(left, right+1))
+                          for __col in range(left, right+1))
                 height = sum(heights)
                 width = sum(widths)
             else:
@@ -175,7 +175,7 @@ class GridCairoRenderer(object):
         col_start, col_stop = self.col_rl
         tab_start, tab_stop = self.tab_fl
 
-        for tab in xrange(tab_start, tab_stop):
+        for tab in range(tab_start, tab_stop):
             # Scale context to page extent
             # In order to keep the aspect ration intact use the maximum
             first_key = row_start, col_start, tab
@@ -215,8 +215,8 @@ class GridCairoRenderer(object):
 
             # Render cells
 
-            for row in xrange(row_start, row_stop):
-                for col in xrange(col_start, col_stop):
+            for row in range(row_start, row_stop):
+                for col in range(col_start, col_stop):
                     key = row, col, tab
                     rect = self.get_cell_rect(row, col, tab)  # Rect
                     if rect is not None:
@@ -677,14 +677,14 @@ class GridCellContentCairoRenderer(object):
             with warnings.catch_warnings(record=True) as warning_lines:
                 warnings.resetwarnings()
                 warnings.simplefilter("always")
-                pango_layout.set_markup(unicode(content))
+                pango_layout.set_markup(str(content))
 
                 if warning_lines:
-                    w2unicode = lambda m: unicode(m.message)
-                    msg = u"\n".join(map(w2unicode, warning_lines))
+                    w2unicode = lambda m: str(m.message)
+                    msg = "\n".join(map(w2unicode, warning_lines))
                     pango_layout.set_text(msg)
         else:
-            pango_layout.set_text(unicode(content))
+            pango_layout.set_text(str(content))
 
         alignment = cell_attributes["justification"]
         pango_layout.set_alignment(wx2pango_alignment[alignment])
@@ -812,7 +812,7 @@ class GridCellContentCairoRenderer(object):
             # A matplotlib figure is returned --> Draw it!
             self.draw_matplotlib_figure(content)
 
-        elif isinstance(content, basestring) and is_svg(content):
+        elif isinstance(content, str) and is_svg(content):
             # The content is a vaid SVG xml string
             self.draw_svg(content)
 

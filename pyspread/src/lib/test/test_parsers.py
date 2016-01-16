@@ -125,7 +125,7 @@ param_common_start = [
     {"strings": ["", ""], "res": ""},
     {"strings": [""] * 100, "res": ""},
     {"strings": ["test", "test"], "res": "test"},
-    {"strings": [u"test", u"test"], "res": "test"},
+    {"strings": ["test", "test"], "res": "test"},
     {"strings": ["te", "tl"], "res": "t"},
     {"strings": ["1", "tl"], "res": ""},
     {"strings": ["split", "splitlines"], "res": "split"},

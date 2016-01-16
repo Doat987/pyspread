@@ -69,7 +69,7 @@ class TestClipboard(object):
     param_set_get_clipboard = [
         {'text': ""},
         {'text': "Test"},
-        {'text': u"ÓÓó€ëáßðïœ"},
+        {'text': "ÓÓó€ëáßðïœ"},
         {'text': "Test1\tTest2"},
         {'text': "\b"},
     ]
