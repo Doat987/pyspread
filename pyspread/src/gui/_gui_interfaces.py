@@ -47,15 +47,11 @@ except ImportError:
 import wx
 import wx.lib.agw.genericmessagedialog as GMD
 
-import src.lib.i18n as i18n
-
 from ._dialogs import MacroDialog, DimensionsEntryDialog, AboutDialog
 from ._dialogs import CsvImportDialog, CellEntryDialog, CsvExportDialog
 from ._dialogs import PreferencesDialog, GPGParamsDialog, PasteAsDialog
 from src.gui._cairo_export_dialog import CairoExportDialog
-
-# use ugettext instead of gettext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 class ModalDialogInterfaceMixin(object):

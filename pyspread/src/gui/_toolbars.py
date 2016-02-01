@@ -50,8 +50,7 @@ from .icons import icons
 
 from . import _widgets
 
-# Use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 class ToolbarBase(aui.AuiToolBar, EventMixin):

@@ -36,8 +36,7 @@ import src.lib.i18n as i18n
 
 from src.lib._grid_cairo_renderer import GridCairoRenderer
 
-# Use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 class Printout(wx.Printout):

@@ -53,7 +53,6 @@ from wx.lib.wordwrap import wordwrap
 import wx.lib.masked
 import wx.stc as stc
 
-import src.lib.i18n as i18n
 from src.config import config, VERSION
 from src.sysvars import get_program_path
 from src.gui._widgets import PythonSTC
@@ -67,9 +66,7 @@ import ast
 from traceback import print_exception
 from io import StringIO
 from sys import exc_info
-
-# use ugettext instead of gettext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 class IntValidator(wx.PyValidator):

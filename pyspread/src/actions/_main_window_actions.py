@@ -69,8 +69,7 @@ try:
 except ImportError:
     cairo = None
 
-# use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 class Actions(EventMixin):

@@ -52,10 +52,9 @@ except ImportError:
 
 import wx
 import wx.grid
-import wx.combo
+import wx.adv
 import wx.stc as stc
-from wx.lib.intctrl import IntCtrl, EVT_INT
-
+int
 import src.lib.i18n as i18n
 from src.lib.parsers import common_start
 from src.lib._string_helpers import quote
@@ -63,14 +62,13 @@ from src.lib._string_helpers import quote
 from src.config import config
 from src.sysvars import get_default_font, is_gtk, get_color
 
-from ._events import post_command_event, EntryLineEventMixin, GridCellEventMixin
-from ._events import StatusBarEventMixin, GridEventMixin, GridActionEventMixin
-from ._events import MainWindowEventMixin
+from ._events import post_command_event, EntryLineEventMixin
+from ._events import StatusBarEventMixin, GridEventMixin, GridCellEventMixin
+from ._events import MainWindowEventMixin, GridActionEventMixin
 
 from .icons import icons
 
-# Use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 # Maximum tooltip string length
 MAX_TOOLTIP_LENGTH = 1000
@@ -388,7 +386,7 @@ class PythonSTC(stc.StyledTextCtrl):
 # end of class PythonSTC
 
 
-class ImageComboBox(wx.combo.OwnerDrawnComboBox):
+class ImageComboBox(wx.adv.OwnerDrawnComboBox):
     """Base class for image combo boxes
 
     The class provides alternating backgrounds. Stolen from demo.py
@@ -1088,7 +1086,7 @@ class StatusBar(wx.StatusBar, StatusBarEventMixin, MainWindowEventMixin):
 # end of class StatusBar
 
 
-class TableChoiceIntCtrl(IntCtrl, GridEventMixin, GridActionEventMixin):
+class TableChoiceIntCtrl(wx.TextCtrl, GridEventMixin, GridActionEventMixin):
     """IntCtrl for choosing the current grid table"""
 
     def __init__(self, parent, main_window, no_tabs):
@@ -1096,7 +1094,7 @@ class TableChoiceIntCtrl(IntCtrl, GridEventMixin, GridActionEventMixin):
         self.main_window = main_window
         self.no_tabs = no_tabs
 
-        IntCtrl.__init__(self, parent, allow_long=True, style=wx.NO_BORDER)
+        wx.TextCtrl.__init__(self, parent, allow_long=True, style=wx.NO_BORDER)
 
         self.last_change_s = time.clock()
 
@@ -1108,7 +1106,7 @@ class TableChoiceIntCtrl(IntCtrl, GridEventMixin, GridActionEventMixin):
         self.switching = False
         self.cursor_pos = 0
 
-        self.Bind(EVT_INT, self.OnInt)
+        self.Bind(EVT_TEXT, self.OnInt)
         self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
         self.Bind(wx.EVT_SET_FOCUS, self.OnFocus)
         self.main_window.Bind(self.EVT_CMD_RESIZE_GRID, self.OnResizeGrid)

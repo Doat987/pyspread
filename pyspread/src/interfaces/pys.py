@@ -44,8 +44,7 @@ import src.lib.i18n as i18n
 
 from src.lib.selection import Selection
 
-#use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 class Pys(object):

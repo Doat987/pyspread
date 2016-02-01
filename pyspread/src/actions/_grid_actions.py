@@ -82,8 +82,7 @@ from src.actions._grid_cell_actions import CellActions
 
 from src.gui._events import post_command_event
 
-# Use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 class FileActions(Actions):

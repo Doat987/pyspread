@@ -63,8 +63,7 @@ except ImportError:
     cairo = None
 
 import src.lib.i18n as i18n
-# use ugettext instead of gettext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 FILETYPE2WILDCARD = {

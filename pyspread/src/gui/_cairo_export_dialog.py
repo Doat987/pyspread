@@ -32,8 +32,7 @@ Provides:
 import wx
 from wx.lib.intctrl import IntCtrl
 from collections import OrderedDict
-import src.lib.i18n as i18n
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 class CairoExportDialog(wx.Dialog):

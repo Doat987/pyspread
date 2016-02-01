@@ -53,8 +53,8 @@ try:
 except ImportError:
     pyplot = None
 
-import pango
-import pangocairo
+from gi.repository import Pango as pango
+from gi.repository import PangoCairo as pangocairo
 
 from src.lib.parsers import color_pack2rgb, is_svg
 

@@ -39,16 +39,12 @@ Provides
 
 import sys
 import optparse
+from gettext import gettext as _
 
 import wx
 __ = wx.App(False)  # Windows Hack
 
 from src.sysvars import get_program_path
-from src.lib.i18n import i18n
-
-
-# Use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
 
 sys.setrecursionlimit(65535)
 sys.path.insert(0, get_program_path())
@@ -62,6 +58,7 @@ except AttributeError:
     pass
 
 from src.gui._events import post_command_event, GridActionEventMixin
+import src.lib.i18n
 
 DEBUG = False
 

@@ -46,7 +46,6 @@ from ._gui_interfaces import GuiInterfaces
 from ._menubars import ContextMenu
 from ._chart_dialog import ChartDialog
 
-import src.lib.i18n as i18n
 from src.sysvars import is_gtk
 from src.config import config
 
@@ -55,9 +54,7 @@ from src.model.model import CodeArray
 
 from src.actions._grid_actions import AllGridActions
 from src.gui._grid_cell_editor import GridCellEditor
-
-# Use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 class Grid(wx.grid.Grid, EventMixin):

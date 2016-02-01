@@ -36,6 +36,7 @@ Provides
 """
 
 import bz2
+import io
 from . import i18n
 
 import wx
@@ -43,8 +44,7 @@ import wx
 from src.gui._events import post_command_event
 from src.sysvars import is_gtk
 
-#use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 class AOpenMixin(object):
@@ -154,7 +154,7 @@ class AOpenMixin(object):
         event.Skip()
 
 
-class AOpen(AOpenMixin, file):
+class AOpen(AOpenMixin, io.TextIOBase):
     """Read and write files with status messages and abort option
 
     Extra Key Word Parameters (extends open)
@@ -171,13 +171,13 @@ class AOpen(AOpenMixin, file):
 
     """
 
-    parent_cls = file
+    parent_cls = io.TextIOBase
 
     def __init__(self, *args, **kwargs):
 
         self.set_initial_state(kwargs)
 
-        file.__init__(self, *args, **kwargs)
+        io.TextIOBase.__init__(self, *args, **kwargs)
 
 
 class Bz2AOpen(AOpenMixin, bz2.BZ2File):

@@ -67,8 +67,7 @@ from src.gui._events import post_command_event, EventMixin
 
 from src.actions._main_window_actions import AllMainWindowActions
 
-# Use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 class MainWindow(wx.Frame, EventMixin):
@@ -132,14 +131,14 @@ class MainWindow(wx.Frame, EventMixin):
         post_command_event(self, self.StatusBarMsg, text=welcome_text)
 
         # Toolbars
-        self.main_toolbar = MainToolbar(self, -1)
-        self.macro_toolbar = MacroToolbar(self, -1)
-        self.find_toolbar = FindToolbar(self, -1)
-        self.attributes_toolbar = AttributesToolbar(self, -1)
-        self.widget_toolbar = WidgetToolbar(self, -1)
+        #self.main_toolbar = MainToolbar(self, -1)
+        #self.macro_toolbar = MacroToolbar(self, -1)
+        #self.find_toolbar = FindToolbar(self, -1)
+        #self.attributes_toolbar = AttributesToolbar(self, -1)
+        #self.widget_toolbar = WidgetToolbar(self, -1)
 
         # Entry line
-        self.entry_line_panel = EntryLineToolbarPanel(self, -1)
+        #self.entry_line_panel = EntryLineToolbarPanel(self, -1)
 
         # Main grid
         self.grid = Grid(self, -1, S=S, dimensions=dimensions)
@@ -154,7 +153,7 @@ class MainWindow(wx.Frame, EventMixin):
         # Layout and bindings
 
         self._set_properties()
-        self._do_layout()
+        #self._do_layout()
         self._bind()
 
     def _states(self):

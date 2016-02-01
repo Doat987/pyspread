@@ -41,9 +41,7 @@ import gnupg
 import src.lib.i18n as i18n
 from src.config import config
 from src.gui._gui_interfaces import get_key_params_from_user
-
-# Use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 def _eq_keyid(fingerprint1, fingerprint2):

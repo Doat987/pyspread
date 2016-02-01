@@ -74,15 +74,12 @@ import wx.lib.agw.flatnotebook as fnb
 from ._widgets import LineStyleComboBox, MarkerStyleComboBox
 from ._widgets import CoordinatesComboBox
 from ._events import post_command_event, ChartDialogEventMixin
-import src.lib.i18n as i18n
 import src.lib.charts as charts
 from src.lib.parsers import color2code, code2color, parse_dict_strings
 from src.lib.parsers import unquote_string
 from .icons import icons
 from sysvars import get_default_font, get_color
-
-# Use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 # --------------

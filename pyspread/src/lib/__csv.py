@@ -48,11 +48,9 @@ from src.config import config
 
 from src.gui._events import post_command_event, StatusBarEventMixin
 
-import src.lib.i18n as i18n
 from src.lib.fileio import AOpen
 
-#use ugettext instead of getttext to avoid unicode errors
-_ = i18n.language.ugettext
+from gettext import gettext as _
 
 
 def sniff(filepath):
