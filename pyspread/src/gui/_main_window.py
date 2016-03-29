@@ -360,7 +360,7 @@ class MainWindow(wx.Frame, EventMixin):
     def set_icon(self, bmp):
         """Sets main window icon to given wx.Bitmap"""
 
-        _icon = wx.EmptyIcon()
+        _icon = wx.Icon()
         _icon.CopyFromBitmap(bmp)
         self.SetIcon(_icon)
 
@@ -387,7 +387,7 @@ class MainWindowEventHandlers(EventMixin):
         """Main window move event"""
 
         # Store window position in config
-        position = self.main_window.GetScreenPositionTuple()
+        position = self.main_window.GetScreenPosition()
 
         config["window_position"] = repr(position)
 

@@ -47,7 +47,7 @@ class GridRenderer(wx.grid.PyGridCellRenderer):
 
     def __init__(self, data_array):
 
-        wx.grid.PyGridCellRenderer.__init__(self)
+        wx.grid.GridCellRenderer.__init__(self)
 
         self.data_array = data_array
 

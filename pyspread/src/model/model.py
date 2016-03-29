@@ -38,6 +38,7 @@ import ast
 import base64
 import bz2
 from copy import copy
+import imp
 import io
 import datetime
 from itertools import product
@@ -1154,8 +1155,8 @@ class CodeArray(DataArray):
 
         # Set up environment for evaluation
 
-        env_dict = {'X': key[0], 'Y': key[1], 'Z': key[2], 'bz2': bz2,
-                    'base64': base64, 'charts': charts, 'nn': nn,
+        env_dict = {'X': key[0], 'Y': key[1], 'Z': key[2], 'bz2': bz2, 'io':io,
+                    'base64': base64, 'charts': charts, 'imp': imp, 'nn': nn,
                     'R': key[0], 'C': key[1], 'T': key[2], 'S': self}
         env = self._get_updated_environment(env_dict=env_dict)
 
@@ -1272,7 +1273,9 @@ class CodeArray(DataArray):
         """Reloads modules that are available in cells"""
 
         import src.lib.charts as charts
-        modules = [charts, bz2, base64, re, ast, sys, wx, numpy, datetime]
+        import imp
+        modules = [charts, imp, bz2, base64, re, ast, sys, wx, numpy, datetime,
+                   io]
 
         for module in modules:
             imp.reload(module)
@@ -1312,6 +1315,7 @@ class CodeArray(DataArray):
 
         # Set up environment for evaluation
         globals().update(self._get_updated_environment())
+        import io
 
         # Create file-like string to capture output
         code_out = io.StringIO()

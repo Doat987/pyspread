@@ -52,6 +52,7 @@ import wx.grid
 from wx.lib.wordwrap import wordwrap
 import wx.lib.masked
 import wx.stc as stc
+import wx.lib.intctrl
 
 from src.config import config, VERSION
 from src.sysvars import get_program_path
@@ -795,7 +796,7 @@ class MacroDialog(wx.Frame, MainWindowEventMixin):
 
         # begin wxGlade: MacroDialog.__init__
         kwds["style"] = \
-            wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER | wx.THICK_FRAME
+            wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER
 
         self.parent = parent
         self.macros = macros

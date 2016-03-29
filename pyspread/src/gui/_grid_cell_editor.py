@@ -48,7 +48,7 @@ class GridCellEditor(wx.grid.PyGridCellEditor, GridEventMixin):
     def __init__(self, main_window, max_char_width=50):
 
         self.main_window = main_window
-        wx.grid.PyGridCellEditor.__init__(self)
+        wx.grid.GridCellEditor.__init__(self)
 
         self.max_char_width = max_char_width
         self.startValue = ""

@@ -44,7 +44,7 @@ class GridTable(wx.grid.PyGridTableBase):
         self.grid = grid
         self.data_array = data_array
 
-        wx.grid.PyGridTableBase.__init__(self)
+        wx.grid.GridTableBase.__init__(self)
 
         # we need to store the row length and column length to
         # see if the table has changed size

@@ -100,7 +100,7 @@ class _filledMenu(wx.Menu):
                 if parent == self:
                     self.menubar.Append(menu, menuname)
                 else:
-                    parent.AppendMenu(menu_id, menuname, menu)
+                    parent.Append(menu_id, menuname, menu)
 
             elif obj == wx.MenuItem:
                 try:
@@ -116,7 +116,7 @@ class _filledMenu(wx.Menu):
 
                 menuitem = obj(parent, item_id, shortcut, helptext, style)
 
-                parent.AppendItem(menuitem)
+                parent.Append(menuitem)
 
                 if _("&Approve file") == shortcut:
                     self.approve_item = menuitem
