@@ -1273,6 +1273,7 @@ class CodeArray(DataArray):
         """Reloads modules that are available in cells"""
 
         import src.lib.charts as charts
+        import io
         import imp
         modules = [charts, imp, bz2, base64, re, ast, sys, wx, numpy, datetime,
                    io]
