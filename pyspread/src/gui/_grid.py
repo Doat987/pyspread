@@ -412,7 +412,7 @@ class GridCellEventHandlers(object):
             wildcard += "|"+ _("SVG file") + " (*.svg)|*.svg"
 
         message = _("Select image for current cell")
-        style = wx.OPEN | wx.CHANGE_DIR
+        style = wx.FD_OPEN | wx.FD_CHANGE_DIR
         filepath, index = \
             self.grid.interfaces.get_filepath_findex_from_user(wildcard,
                                                                message, style)
@@ -455,7 +455,7 @@ class GridCellEventHandlers(object):
         # Get file name
         wildcard = "*"
         message = _("Select bitmap for current cell")
-        style = wx.OPEN | wx.CHANGE_DIR
+        style = wx.FD_OPEN | wx.FD_CHANGE_DIR
         filepath, __ = \
             self.grid.interfaces.get_filepath_findex_from_user(wildcard,
                                                                message, style)

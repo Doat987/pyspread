@@ -1392,7 +1392,7 @@ class AllSeriesPanel(wx.Panel, ChartDialogEventMixin):
     """Panel that holds series panels for all series of the chart"""
 
     def __init__(self, grid):
-        style = wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER | wx.THICK_FRAME
+        style = wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER
 
         self.grid = grid
 
@@ -1540,7 +1540,7 @@ class ChartDialog(wx.Dialog, ChartDialogEventMixin):
     """Chart dialog for generating chart generation strings"""
 
     def __init__(self, main_window, key, code):
-        style = wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER | wx.THICK_FRAME
+        style = wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER
         wx.Dialog.__init__(self, main_window, -1, style=style)
 
         self.updating = False

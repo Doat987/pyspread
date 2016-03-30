@@ -131,14 +131,14 @@ class MainWindow(wx.Frame, EventMixin):
         post_command_event(self, self.StatusBarMsg, text=welcome_text)
 
         # Toolbars
-        #self.main_toolbar = MainToolbar(self, -1)
-        #self.macro_toolbar = MacroToolbar(self, -1)
-        #self.find_toolbar = FindToolbar(self, -1)
-        #self.attributes_toolbar = AttributesToolbar(self, -1)
-        #self.widget_toolbar = WidgetToolbar(self, -1)
+        self.main_toolbar = MainToolbar(self, -1)
+        self.macro_toolbar = MacroToolbar(self, -1)
+        self.find_toolbar = FindToolbar(self, -1)
+        self.attributes_toolbar = AttributesToolbar(self, -1)
+        self.widget_toolbar = WidgetToolbar(self, -1)
 
         # Entry line
-        #self.entry_line_panel = EntryLineToolbarPanel(self, -1)
+        self.entry_line_panel = EntryLineToolbarPanel(self, -1)
 
         # Main grid
         self.grid = Grid(self, -1, S=S, dimensions=dimensions)
@@ -153,7 +153,7 @@ class MainWindow(wx.Frame, EventMixin):
         # Layout and bindings
 
         self._set_properties()
-        #self._do_layout()
+        self._do_layout()
         self._bind()
 
     def _states(self):
@@ -760,7 +760,7 @@ class MainWindowEventHandlers(EventMixin):
         wildcard = "|".join(wildcards)
 
         message = _("Choose file to open.")
-        style = wx.OPEN
+        style = wx.FD_OPEN
 
         default_filetype = config["default_open_filetype"]
         try:
@@ -866,7 +866,7 @@ class MainWindowEventHandlers(EventMixin):
         wildcard = "|".join(wildcards)
 
         message = _("Choose filename for saving.")
-        style = wx.SAVE
+        style = wx.FD_SAVE
 
         default_filetype = config["default_save_filetype"]
         try:
@@ -934,7 +934,7 @@ class MainWindowEventHandlers(EventMixin):
         wildcard = "|".join(wildcards)
 
         message = _("Choose file to import.")
-        style = wx.OPEN
+        style = wx.FD_OPEN
         filepath, filterindex = \
             self.interfaces.get_filepath_findex_from_user(wildcard, message,
                                                           style)
@@ -1024,7 +1024,7 @@ class MainWindowEventHandlers(EventMixin):
                 filters.append("cell_png")
 
         message = _("Choose filename for export.")
-        style = wx.SAVE
+        style = wx.FD_SAVE
         path, filterindex = \
             self.interfaces.get_filepath_findex_from_user(wildcard, message,
                                                           style)
@@ -1056,7 +1056,7 @@ class MainWindowEventHandlers(EventMixin):
         # Get filepath from user
         message = _("Choose file path for PDF export.")
 
-        style = wx.SAVE
+        style = wx.FD_SAVE
         filepath, filterindex = \
             self.interfaces.get_filepath_findex_from_user(wildcard, message,
                                                           style)
@@ -1371,7 +1371,7 @@ class MainWindowEventHandlers(EventMixin):
 
         message = _("Choose macro file.")
 
-        style = wx.OPEN
+        style = wx.FD_OPEN
         filepath, filterindex = \
             self.interfaces.get_filepath_findex_from_user(wildcard, message,
                                                           style)
@@ -1400,7 +1400,7 @@ class MainWindowEventHandlers(EventMixin):
 
         message = _("Choose macro file.")
 
-        style = wx.SAVE
+        style = wx.FD_SAVE
         filepath, filterindex = \
             self.interfaces.get_filepath_findex_from_user(wildcard, message,
                                                           style)

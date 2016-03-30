@@ -565,17 +565,17 @@ class GridCellContentCairoRenderer(object):
     def set_font(self, pango_layout):
         """Sets the font for draw_text"""
 
-        wx2pango_weights = {
-            wx.FONTWEIGHT_BOLD: pango.WEIGHT_BOLD,
-            wx.FONTWEIGHT_LIGHT: pango.WEIGHT_LIGHT,
-            wx.FONTWEIGHT_NORMAL: pango.WEIGHT_NORMAL,
-        }
-
-        wx2pango_styles = {
-            wx.FONTSTYLE_NORMAL: pango.STYLE_NORMAL,
-            wx.FONTSTYLE_SLANT: pango.STYLE_OBLIQUE,
-            wx.FONTSTYLE_ITALIC: pango.STYLE_ITALIC,
-        }
+#        wx2pango_weights = {
+#            wx.FONTWEIGHT_BOLD: pango.WEIGHT_BOLD,
+#            wx.FONTWEIGHT_LIGHT: pango.WEIGHT_LIGHT,
+#            wx.FONTWEIGHT_NORMAL: pango.WEIGHT_NORMAL,
+#        }
+#
+#        wx2pango_styles = {
+#            wx.FONTSTYLE_NORMAL: pango.STYLE_NORMAL,
+#            wx.FONTSTYLE_SLANT: pango.STYLE_OBLIQUE,
+#            wx.FONTSTYLE_ITALIC: pango.STYLE_ITALIC,
+#        }
 
         cell_attributes = self.code_array.cell_attributes[self.key]
 
@@ -595,19 +595,19 @@ class GridCellContentCairoRenderer(object):
         attrs = pango.AttrList()
 
         # Underline
-        attrs.insert(pango.AttrUnderline(underline, 0, MAX_RESULT_LENGTH))
+#        attrs.insert(pango.AttrUnderline(underline, 0, MAX_RESULT_LENGTH))
 
-        # Weight
-        weight = wx2pango_weights[fontweight]
-        attrs.insert(pango.AttrWeight(weight, 0, MAX_RESULT_LENGTH))
-
-        # Style
-        style = wx2pango_styles[fontstyle]
-        attrs.insert(pango.AttrStyle(style, 0, MAX_RESULT_LENGTH))
+#        # Weight
+#        weight = wx2pango_weights[fontweight]
+#        attrs.insert(pango.AttrWeight(weight, 0, MAX_RESULT_LENGTH))
+#
+#        # Style
+#        style = wx2pango_styles[fontstyle]
+#        attrs.insert(pango.AttrStyle(style, 0, MAX_RESULT_LENGTH))
 
         # Strikethrough
-        attrs.insert(pango.AttrStrikethrough(strikethrough, 0,
-                                             MAX_RESULT_LENGTH))
+#        attrs.insert(pango.AttrStrikethrough(strikethrough, 0,
+#                                             MAX_RESULT_LENGTH))
 
         pango_layout.set_attributes(attrs)
 
@@ -641,11 +641,11 @@ class GridCellContentCairoRenderer(object):
     def draw_text(self, content):
         """Draws text cell content to context"""
 
-        wx2pango_alignment = {
-            "left": pango.ALIGN_LEFT,
-            "center": pango.ALIGN_CENTER,
-            "right": pango.ALIGN_RIGHT,
-        }
+#        wx2pango_alignment = {
+#            "left": pango.ALIGN_LEFT,
+#            "center": pango.ALIGN_CENTER,
+#            "right": pango.ALIGN_RIGHT,
+#        }
 
         cell_attributes = self.code_array.cell_attributes[self.key]
 
@@ -659,11 +659,11 @@ class GridCellContentCairoRenderer(object):
         # Text color attributes
         self.context.set_source_rgb(*self._get_text_color())
 
-        ptx = pangocairo.CairoContext(self.context)
-        pango_layout = ptx.create_layout()
+        pango_layout = pangocairo.create_layout(self.context)
+#        print(dir(pango_layout))
         self.set_font(pango_layout)
 
-        pango_layout.set_wrap(pango.WRAP_WORD_CHAR)
+#        pango_layout.set_wrap(pango.WRAP_WORD_CHAR)
 
         pango_layout.set_width(int(round((rect[2] - 4.0) * pango.SCALE)))
 
@@ -684,10 +684,11 @@ class GridCellContentCairoRenderer(object):
                     msg = "\n".join(map(w2unicode, warning_lines))
                     pango_layout.set_text(msg)
         else:
-            pango_layout.set_text(str(content))
+            pango_layout.set_text(str(content), -1)
 
-        alignment = cell_attributes["justification"]
-        pango_layout.set_alignment(wx2pango_alignment[alignment])
+#        alignment = cell_attributes["justification"]
+#
+#        pango_layout.set_alignment(wx2pango_alignment[alignment])
 
         # Shift text for vertical alignment
         extents = pango_layout.get_pixel_extents()
@@ -705,8 +706,8 @@ class GridCellContentCairoRenderer(object):
         self._rotate_cell(angle, rect)
         self.context.translate(0, downshift)
 
-        ptx.update_layout(pango_layout)
-        ptx.show_layout(pango_layout)
+#        pango_layout.update_layout()
+#        pango_layout.show_layout()
 
         self.context.restore()
 
@@ -804,7 +805,7 @@ class GridCellContentCairoRenderer(object):
             label = self.code_array.cell_attributes[self.key]["button_cell"]
             self.draw_button(1, 1, self.rect[2]-5, self.rect[3]-5, label)
 
-        elif isinstance(content, wx._gdi.Bitmap):
+        elif isinstance(content, wx.Bitmap):
             # A bitmap is returned --> Draw it!
             self.draw_bitmap(content)
 

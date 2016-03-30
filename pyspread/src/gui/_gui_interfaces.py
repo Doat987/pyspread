@@ -131,7 +131,7 @@ class ModalDialogInterfaceMixin(object):
         message: String
         \tMessage in the file dialog
         style: Integer
-        \tDialog style, e. g. wx.OPEN | wx.CHANGE_DIR
+        \tDialog style, e. g. wx.FD_OPEN | wx.CHANGE_DIR
         filterindex: Integer, defaults to 0
         \tDefault filterindex that is selected when the dialog is displayed
 

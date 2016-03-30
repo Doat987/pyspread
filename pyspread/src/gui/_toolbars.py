@@ -816,7 +816,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
 
         """
 
-        textcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        textcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
         textcolor.SetRGB(fontcolor)
 
         self.textcolor_choice.SetColour(textcolor)
@@ -829,7 +829,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
     def _update_bgbrush(self, bgcolor):
         """Updates background color"""
 
-        brush_color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        brush_color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         brush_color.SetRGB(bgcolor)
 
         self.bgcolor_choice.SetColour(brush_color)
@@ -837,7 +837,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
     def _update_bordercolor(self, bordercolor):
         """Updates background color"""
 
-        border_color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_ACTIVEBORDER)
+        border_color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_ACTIVEBORDER)
         border_color.SetRGB(bordercolor)
 
         self.linecolor_choice.SetColour(border_color)

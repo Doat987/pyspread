@@ -100,10 +100,10 @@ class GridTable(wx.grid.PyGridTableBase):
 
         if cell_code is not None and len(cell_code) > maxlength:
             chunk = 80
-            cell_code = "\n".join(cell_code[i:i + chunk]
-                                  for i in range(0, len(cell_code), chunk))
+            cell_code = u"\n".join(cell_code[i:i + chunk]
+                                   for i in range(0, len(cell_code), chunk))
 
-        return cell_code
+        return cell_code if cell_code is not None else ""
 
     def SetValue(self, row, col, value, refresh=True):
         """Set the value of a cell, merge line breaks"""

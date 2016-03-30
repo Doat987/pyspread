@@ -403,11 +403,11 @@ class ImageComboBox(wx.adv.OwnerDrawnComboBox):
         # or if we are painting the combo control itself
         # then use the default rendering.
 
-        if (item & 1 == 0 or flags & (wx.combo.ODCB_PAINTING_CONTROL |
-                                      wx.combo.ODCB_PAINTING_SELECTED)):
+        if (item & 1 == 0 or flags & (wx.adv.ODCB_PAINTING_CONTROL |
+                                      wx.adv.ODCB_PAINTING_SELECTED)):
             try:
-                wx.combo.OwnerDrawnComboBox.OnDrawBackground(self, dc,
-                                                             rect, item, flags)
+                wx.adv.OwnerDrawnComboBox.OnDrawBackground(self, dc,
+                                                           rect, item, flags)
             finally:
                 return
 
@@ -606,7 +606,7 @@ class BorderEditChoice(ImageComboBox):
 
         bmp = icons[item_name]
 
-        icon = wx.EmptyIcon()
+        icon = wx.Icon()
         icon.CopyFromBitmap(bmp)
 
         # Draw the border icon in the combobox
@@ -1093,7 +1093,7 @@ class TableChoiceIntCtrl(wx.TextCtrl, GridEventMixin, GridActionEventMixin):
         self.main_window = main_window
         self.no_tabs = no_tabs
 
-        wx.TextCtrl.__init__(self, parent, allow_long=True, style=wx.NO_BORDER)
+        wx.TextCtrl.__init__(self, parent, style=wx.NO_BORDER)
 
         self.last_change_s = time.clock()
 
@@ -1105,7 +1105,7 @@ class TableChoiceIntCtrl(wx.TextCtrl, GridEventMixin, GridActionEventMixin):
         self.switching = False
         self.cursor_pos = 0
 
-        self.Bind(EVT_TEXT, self.OnInt)
+        self.Bind(wx.EVT_TEXT, self.OnInt)
         self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
         self.Bind(wx.EVT_SET_FOCUS, self.OnFocus)
         self.main_window.Bind(self.EVT_CMD_RESIZE_GRID, self.OnResizeGrid)

@@ -1154,6 +1154,8 @@ class CodeArray(DataArray):
                 return numpy.array([_f for _f in val if _f])
 
         # Set up environment for evaluation
+        import io
+        import imp
 
         env_dict = {'X': key[0], 'Y': key[1], 'Z': key[2], 'bz2': bz2, 'io':io,
                     'base64': base64, 'charts': charts, 'imp': imp, 'nn': nn,

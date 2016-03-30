@@ -234,7 +234,7 @@ class GridRenderer(wx.grid.PyGridCellRenderer):
     def _get_cairo_bmp(self, mdc, key, rect, is_selected, view_frozen):
         """Returns a wx.Bitmap of cell key in size rect"""
 
-        bmp = wx.EmptyBitmap(rect.width, rect.height)
+        bmp = wx.Bitmap(rect.width, rect.height)
         mdc.SelectObject(bmp)
         mdc.SetBackgroundMode(wx.SOLID)
         mdc.SetBackground(wx.WHITE_BRUSH)

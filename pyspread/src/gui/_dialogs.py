@@ -871,7 +871,7 @@ class MacroDialog(wx.Frame, MainWindowEventMixin):
         self.ok_button.SetToolTipString(_("Accept all changes"))
         self.apply_button.SetToolTipString(_("Apply changes to current macro"))
         self.close_button.SetToolTipString(_("Remove current macro"))
-        self.splitter.SetBackgroundStyle(wx.BG_STYLE_COLOUR)
+        #self.splitter.SetBackgroundStyle(wx.BG_STYLE_COLOUR)
         self.result_ctrl.SetMinSize((10, 10))
 
     def OnText(self, event):
@@ -1154,7 +1154,7 @@ class AboutDialog(object):
         # First we create and fill the info object
         parent = args[0]
 
-        info = wx.AboutDialogInfo()
+        info = wx.adv.AboutDialogInfo()
         info.Name = "pyspread"
         info.Version = config["version"]
         info.Copyright = "(C) Martin Manns"
@@ -1178,7 +1178,7 @@ class AboutDialog(object):
         info.License = wordwrap(license_text, 500, wx.ClientDC(parent))
 
         # Then we call wx.AboutBox giving it that info object
-        wx.AboutBox(info)
+        wx.adv.AboutBox(info)
 
     def _set_properties(self):
         """Setup title and label"""
@@ -1295,8 +1295,7 @@ class PreferencesDialog(wx.Dialog):
 
     def __init__(self, *args, **kwargs):
         kwargs["title"] = _("Preferences")
-        kwargs["style"] = \
-            wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER | wx.THICK_FRAME
+        kwargs["style"] = wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER
         wx.Dialog.__init__(self, *args, **kwargs)
 
         self.labels = []

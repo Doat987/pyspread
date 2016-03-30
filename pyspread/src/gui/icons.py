@@ -122,7 +122,7 @@ class GtkArtProvider(wx.ArtProvider):
             return wx.Bitmap(self.extra_icons[artid], wx.BITMAP_TYPE_ANY)
 
         else:
-            return wx.ArtProvider.GetBitmap(artid, client, size)
+            return wx.Bitmap()  #wx.ArtProvider.GetBitmap(artid, client, size)
 
 
 class WindowsArtProvider(GtkArtProvider):

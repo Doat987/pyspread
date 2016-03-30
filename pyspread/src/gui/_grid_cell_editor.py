@@ -93,8 +93,7 @@ class GridCellEditor(wx.grid.PyGridCellEditor, GridEventMixin):
         drawn_rect = grid.grid_renderer._get_drawn_rect(grid, key, rect)
 
         self._tc.SetDimensions(drawn_rect.x, drawn_rect.y,
-                               drawn_rect.width+2, drawn_rect.height+2,
-                               wx.SIZE_ALLOW_MINUS_ONE)
+                               drawn_rect.width+2, drawn_rect.height+2)
         self._tc.Layout()
 
     def Show(self, show, attr):
@@ -314,7 +313,7 @@ class GridCellEditor(wx.grid.PyGridCellEditor, GridEventMixin):
     def _update_control_length(self):
         val = self._tc.GetValue()
         extent = self._tc.GetTextExtent(val)[0] + 15  # Small margin
-        width, height = self._tc.GetSizeTuple()
+        width, height = self._tc.GetSize()
         new_width = None
         while width < extent:
             # We need to reszie into the next cell's column
