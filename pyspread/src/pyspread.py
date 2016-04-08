@@ -41,6 +41,8 @@ import sys
 import optparse
 from gettext import gettext as _
 
+import gi
+
 import wx
 __ = wx.App(False)  # Windows Hack
 
@@ -149,6 +151,8 @@ class MainApplication(wx.App, GridActionEventMixin):
 
         from src.config import config
         self.config = config
+
+        gi.require_version('Pango', '1.0')
 
         # call parent class initializer
         wx.App.__init__(self, *args, **kwargs)

@@ -471,7 +471,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
             _widgets.FontChoiceCombobox(self, choices=self.fonts,
                                         style=wx.CB_READONLY, size=(125, -1))
 
-        self.font_choice_combo.SetToolTipString(_("Text font"))
+        self.font_choice_combo.SetToolTip(_("Text font"))
 
         self.AddControl(self.font_choice_combo)
 
@@ -488,7 +488,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
                         choices=list(map(str, self.std_font_sizes)),
                         style=wx.CB_DROPDOWN | wx.TE_PROCESS_ENTER)
 
-        self.font_size_combo.SetToolTipString(_("Text size\n(points)"))
+        self.font_size_combo.SetToolTip(_("Text size\n(points)"))
 
         self.AddControl(self.font_size_combo)
         self.Bind(wx.EVT_COMBOBOX, self.OnTextSize, self.font_size_combo)
@@ -524,7 +524,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
         bmplist = [icons[iconname] for iconname in iconnames]
 
         self.rotation_tb = _widgets.BitmapToggleButton(self, bmplist)
-        self.rotation_tb.SetToolTipString(_("Cell text rotation"))
+        self.rotation_tb.SetToolTip(_("Cell text rotation"))
         self.Bind(wx.EVT_BUTTON, self.OnRotate, self.rotation_tb)
         self.AddControl(self.rotation_tb)
 
@@ -534,7 +534,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
         iconnames = ["JustifyLeft", "JustifyCenter", "JustifyRight"]
         bmplist = [icons[iconname] for iconname in iconnames]
         self.justify_tb = _widgets.BitmapToggleButton(self, bmplist)
-        self.justify_tb.SetToolTipString(_("Justification"))
+        self.justify_tb.SetToolTip(_("Justification"))
         self.Bind(wx.EVT_BUTTON, self.OnJustification, self.justify_tb)
         self.AddControl(self.justify_tb)
 
@@ -545,7 +545,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
         bmplist = [icons[iconname] for iconname in iconnames]
 
         self.alignment_tb = _widgets.BitmapToggleButton(self, bmplist)
-        self.alignment_tb.SetToolTipString(_("Alignment"))
+        self.alignment_tb.SetToolTip(_("Alignment"))
         self.Bind(wx.EVT_BUTTON, self.OnAlignment, self.alignment_tb)
         self.AddControl(self.alignment_tb)
 
@@ -557,7 +557,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
             _widgets.BorderEditChoice(self, choices=choices,
                                       style=wx.CB_READONLY, size=(50, -1))
 
-        self.borderchoice_combo.SetToolTipString(
+        self.borderchoice_combo.SetToolTip(
             _("Choose borders for which attributes are changed"))
 
         self.borderstate = self.border_toggles[0][0]
@@ -577,7 +577,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
             _widgets.PenWidthComboBox(self, choices=choices,
                                       style=wx.CB_READONLY, size=(50, -1))
 
-        self.pen_width_combo.SetToolTipString(_("Border width"))
+        self.pen_width_combo.SetToolTip(_("Border width"))
         self.AddControl(self.pen_width_combo)
         self.Bind(wx.EVT_COMBOBOX, self.OnLineWidth, self.pen_width_combo)
 
@@ -604,9 +604,9 @@ class AttributesToolbar(ToolbarBase, EventMixin):
             csel.ColourSelect(self, -1, "A", (0, 0, 0),
                               size=button_size, style=button_style)
 
-        self.linecolor_choice.SetToolTipString(_("Border line color"))
-        self.bgcolor_choice.SetToolTipString(_("Cell background"))
-        self.textcolor_choice.SetToolTipString(_("Text color"))
+        self.linecolor_choice.SetToolTip(_("Border line color"))
+        self.bgcolor_choice.SetToolTip(_("Cell background"))
+        self.textcolor_choice.SetToolTip(_("Text color"))
 
         self.AddControl(self.linecolor_choice)
         self.AddControl(self.bgcolor_choice)
@@ -819,7 +819,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
         textcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
         textcolor.SetRGB(fontcolor)
 
-        self.textcolor_choice.SetColour(textcolor)
+        #self.textcolor_choice.SetColour(textcolor)
 
     def _update_merge(self, merged):
         """Updates cell merge toggle control"""
@@ -832,7 +832,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
         brush_color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         brush_color.SetRGB(bgcolor)
 
-        self.bgcolor_choice.SetColour(brush_color)
+        #self.bgcolor_choice.SetColour(brush_color)
 
     def _update_bordercolor(self, bordercolor):
         """Updates background color"""
@@ -840,7 +840,7 @@ class AttributesToolbar(ToolbarBase, EventMixin):
         border_color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_ACTIVEBORDER)
         border_color.SetRGB(bordercolor)
 
-        self.linecolor_choice.SetColour(border_color)
+        #self.linecolor_choice.SetColour(border_color)
 
     def _update_borderwidth(self, borderwidth):
         """Updates background color"""

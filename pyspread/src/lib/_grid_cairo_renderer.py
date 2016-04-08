@@ -53,6 +53,11 @@ try:
 except ImportError:
     pyplot = None
 
+import gi
+gi.require_version('Pango', '1.0')
+gi.require_version('PangoCairo', '1.0')
+
+
 from gi.repository import Pango as pango
 from gi.repository import PangoCairo as pangocairo
 
@@ -660,10 +665,10 @@ class GridCellContentCairoRenderer(object):
         self.context.set_source_rgb(*self._get_text_color())
 
         pango_layout = pangocairo.create_layout(self.context)
-#        print(dir(pango_layout))
+
         self.set_font(pango_layout)
 
-#        pango_layout.set_wrap(pango.WRAP_WORD_CHAR)
+        pango_layout.set_wrap(True)
 
         pango_layout.set_width(int(round((rect[2] - 4.0) * pango.SCALE)))
 
@@ -686,6 +691,7 @@ class GridCellContentCairoRenderer(object):
         else:
             pango_layout.set_text(str(content), -1)
 
+
 #        alignment = cell_attributes["justification"]
 #
 #        pango_layout.set_alignment(wx2pango_alignment[alignment])
@@ -706,8 +712,8 @@ class GridCellContentCairoRenderer(object):
         self._rotate_cell(angle, rect)
         self.context.translate(0, downshift)
 
-#        pango_layout.update_layout()
-#        pango_layout.show_layout()
+        pangocairo.update_layout(self.context, pango_layout)
+        pangocairo.show_layout(self.context, pango_layout)
 
         self.context.restore()
 

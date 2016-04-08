@@ -92,8 +92,8 @@ class GridCellEditor(wx.grid.PyGridCellEditor, GridEventMixin):
 
         drawn_rect = grid.grid_renderer._get_drawn_rect(grid, key, rect)
 
-        self._tc.SetDimensions(drawn_rect.x, drawn_rect.y,
-                               drawn_rect.width+2, drawn_rect.height+2)
+        self._tc.SetSize(drawn_rect.x, drawn_rect.y,
+                         drawn_rect.width+2, drawn_rect.height+2)
         self._tc.Layout()
 
     def Show(self, show, attr):
